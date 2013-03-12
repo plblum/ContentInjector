@@ -1,0 +1,32 @@
+﻿@using InsertionsManagement
+
+@{
+    
+// this is a shorthand for the commented out code. It uses extension methods which requires you declare @using InsertionsManager like above.    
+    this.InsertionsManager().AddScriptFile("~/Scripts/jquery-1.5.1.min.js");
+    this.InsertionsManager().AddScriptFile("~/Scripts/modernizr-1.7.min.js");
+    this.InsertionsManager().AddStyleFile("~/Content/Site.css");
+/* Same as above
+    var insertionsManager = this.InsertionsManager();
+    insertionsManager.Access<IScriptFileInserter>().Add("~/Scripts/jquery-1.5.1.min.js");
+    insertionsManager.Access<IScriptFileInserter>().Add("~/Scripts/modernizr-1.7.min.js");
+    insertionsManager.Access<IStyleFileInserter>().Add("~/Content/Site.css");
+ */
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+   <!-- replace-with="MetaTags" -->
+    <title>@ViewBag.Title</title>
+
+   <!-- replace-with="StyleFiles" -->
+   <!-- replace-with="ScriptFiles" -->
+</head>
+
+<body>
+   <!-- replace-with="UpperScriptBlocks" -->
+    @RenderBody()
+   <!-- replace-with="LowerScriptBlocks" -->
+</body>
+</html>
