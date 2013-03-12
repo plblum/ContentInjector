@@ -17,7 +17,7 @@ too.</p>
 at the location where they are defined. This is fine for adding HTML, but often
 you want these tools to create something more complex, like a calendar control
 or filtered textbox, which need JavaScript, both in files and inline, and style
-sheet classes which do no belong side-by-side with the HTML being inserted.
+sheet classes which do not belong side-by-side with the HTML being inserted.
 They belong in specific locations in the page, often in the master page.</p>
 
 <p>The Razor View Engine for ASP.NET MVC makes process of exposing
@@ -34,6 +34,7 @@ page content, InsertionsManager will act as a post-processor to locate <b
 >Insertion Points</b> throughout the page and
 replace them with the content your Views and Html Helpers have registered.</p>
 
+<a name="Example" ></a>
 <h2>Example</h2>
 
 <p>Here is a typical master page (_layout.cshtml) when using
@@ -167,14 +168,13 @@ style='font-size:10pt;font-family:"Lucida Console";color:black'></span></pre>
      file URLs and a style sheet URL. If you wanted to ensure a specific order
      to your scripts, you can pass an order value as an additional parameter:
 
-<pre style='background:#FFEFE6'><span style='font-size:10pt;font-family:"Lucida Console";
-color:black'>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=GramE><span
+<pre style='background:#FFEFE6'><span class=GramE><span
 style='font-size:10pt;font-family:"Lucida Console";color:blue'>this</span><span
 style='font-size:10pt;font-family:"Lucida Console";color:black'>.InsertionsManager(</span></span><span
 style='font-size:10pt;font-family:"Lucida Console";color:black'>).AddScriptFile(</span><span
 style='font-size:10pt;font-family:"Lucida Console";color:#A31515'>&quot;~/Scripts/jquery-1.5.1.min.js&quot;</span><span
 style='font-size:10pt;font-family:"Lucida Console"'>, 10<span
-style='color:black'>);</span></span><br /><span style='font-size:10pt;font-family:"Lucida Console";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;</span><span
+style='color:black'>);</span></span><br /><span
 class=GramE><span style='font-size:10pt;font-family:"Lucida Console";
 color:blue'>this</span><span style='font-size:10pt;font-family:"Lucida Console";
 color:black'>.InsertionsManager(</span></span><span style='font-size:10pt;
@@ -343,7 +343,7 @@ color:black'></span></pre>
 deleted. </p>
 
 <p>Let’s add some script blocks, one assigned to the
-ScriptFiles “Upper” Insertion Point and the other to the “Lower” Insertion
+"ScriptBlocks:Upper” Insertion Point and the other to the “ScriptBlocks:Lower” Insertion
 Point.</p>
 <pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>
 <span style='background:yellow'>@</span><span style='color:blue'>using</span>&nbsp;InsertionsManagement<br /><span style='background:yellow'>@model&nbsp;</span>Models.<span
@@ -358,8 +358,7 @@ style='color:windowtext'>, 0, </span><span style='color:#A31515'>&quot;Upper&quo
 style='color:blue'>this</span>.InsertionsManager(</span>).AddScriptBlock(null, <span
 style='color:#A31515'>&quot;test();&quot;</span><span style='color:windowtext'>, 0, </span><span style='color:#A31515'>&quot;Lower&quot;</span>););<br /><span style='background:yellow'>}</span><br /></pre>
 
-<p>Here is the resulting &lt;body&gt; tag’s <span class=GramE>output
-:</span></p>
+<p>Here is the resulting &lt;body&gt; tag’s <span class=GramE>output:</span></p>
 
 <pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'><span style='color:blue'>&lt;</span><span class=GramE><span
 style='color:maroon'>body</span></span><span style='color:blue'>&gt;</span><br />&nbsp;&nbsp;&nbsp;<span class=GramE><span style='color:blue'>function</span></span>test() {alert(<span style='color:maroon'>'hello'</span>);}<br />&nbsp;&nbsp;&nbsp;&nbsp;<em>The view’s content goes here.</em><br />&nbsp;&nbsp;&nbsp;<span class=GramE>test(</span>);<br /><span style='color:blue'>&lt;/</span><span
@@ -367,17 +366,26 @@ style='color:maroon'>body</span><span style='color:blue'>&gt;</span><span
 style='color:black'></span></pre>
 <h3><a name="gettingStarted">Getting started</a></h3>
 <ul>
-<li>Download InsertionsManager using the <a href="https://github.com/plblum/jTAC/downloads" target="_blank">Downloads</a> button on the InsertionsManager home page.</li>
+<li>Download InsertionsManager using the <a href="https://github.com/plblum/InsertionsManager/downloads" target="_blank">Downloads</a> button on the InsertionsManager home page.</li>
 <li>Add the InsertionsManagement.dll assembly to your ASP.NET MVC web application. Requires MVC 3.0 or higher.
      (Alternatively, add the source code project and set a reference from your
      application to it.)</li>
 <li>In Application_Start, add this code:<br />
 <pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>ViewEngines.Engines.Clear();<br />ViewEngines.Engines.Add(new InsertionsManagement.IMRazorViewEngine());</pre>
 </li>
-<li>Add the customary Insertion Points to the master page, as shown above.</li>
+<li>Add the customary Insertion Points to the master page, as shown in the <a href="#Example">Example above</a>.</li>
 <li>Add @using InsertionsManagement to each View and Html Helper that will use this tool.</li>
 <li>Call methods on this.InsertionsManager() to add content. Methods include AddScriptFile(),
 AddStyleFile(), AddUpperScriptBlock(), AddLowerScriptBlock(), AddMetaTag(), AddHiddenField(),
-ArrayDeclaration(), and AddPlaceholder().</li>
+ArrayDeclaration(), and AddPlaceholder().<br />
+<em>Examples:</em><br />
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().AddScriptFile("~/Scripts/jquery-1.9.1.js");</pre>
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().AddStyleFile("~/Content/StyleSheet.css");</pre>
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().AddScriptBlock("somekey", "some javascript", 0, "Lower");</pre>
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().AddHiddenField("codes", "AB903F");</pre>
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().AddMetaTag("description", "about my site");</pre>
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().AddPlaceholder("&lt;!-- xyz library used under license --&gt;");</pre>
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().ArrayDeclaration("myVar", "my string value", 0, "Lower");<br />this.InsertionsManager().ArrayDeclaration("myVar", 100, 0, "Lower");<br />this.InsertionsManager().ArrayDeclarationAsCode("MyVar", "null", 0, "Lower");</pre>
+</li>
 <li>Open the <strong>Users Guide.pdf</strong> and dig in. It provides details on all described above.</li>
 </ul>
