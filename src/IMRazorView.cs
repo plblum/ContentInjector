@@ -54,6 +54,7 @@ namespace InsertionsManagement
             base.RenderView(viewContext, insertionsManager.ContentWriter, instance);
 
             insertionsManager.UpdatePage();
+            insertionsManager.ReportErrors(viewContext.HttpContext);
          }
       }
    }

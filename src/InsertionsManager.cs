@@ -22,6 +22,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Configuration;
 
 namespace InsertionsManagement
 {
@@ -116,6 +117,45 @@ namespace InsertionsManagement
       }
       protected StringBuilder _content;
 
+
+/// <summary>
+/// Determines if and how errors are reported when there was no Insertion Point
+/// for content that was registered.
+/// </summary>
+/// <remarks>
+/// <para>Set this in Application_Start or appSettings of web.config using key="InsertionsManagerReportErrorsMode"
+/// and value= "None", "Trace", or "Exception"</para>
+/// </remarks>
+/// <value>
+/// <para>If not assigned or setup in appSettings, it defaults to ReportErrorsMode.Exception.</para>
+/// </value>
+      public static ReportErrorsMode ReportErrorsMode
+      {
+         get
+         {
+            if (!_reportErrorsMode.HasValue)
+            {
+               // check appSettings. If not there, use the default
+               string result = WebConfigurationManager.AppSettings["InsertionsManagerReportErrorsMode"];
+               switch (result)
+               {
+                  case "None":
+                     _reportErrorsMode = ReportErrorsMode.None;
+                     break;
+                  case "Trace":
+                     _reportErrorsMode = ReportErrorsMode.Trace;
+                     break;
+                  default:
+                     _reportErrorsMode = ReportErrorsMode.Exception;
+                     break;
+               }
+            }
+            return _reportErrorsMode.Value;
+         }
+         set { _reportErrorsMode = value; }
+      }
+      private static ReportErrorsMode? _reportErrorsMode;
+
 /// <summary>
 /// Primary entry point to retrieve the class that implements IInserter
 /// to add to it. Uses the default group.
@@ -169,10 +209,12 @@ namespace InsertionsManagement
          if (hasUpdated)
             return;
 
+
          string content = _content.ToString();
          if (content.Length == 0)
             return;
 
+         _insertersRemaining = new List<InserterContainer>(_inserters); // this will have items removed by InsertionMatchEvaluator()
          string newContent = UpdateContent(content);
 
          _originalWriter.Write(newContent);
@@ -180,8 +222,13 @@ namespace InsertionsManagement
          hasUpdated = true;
       }
 
-      private bool hasUpdated = false;
+      private bool hasUpdated;// = false;
 
+/// <summary>
+/// UpdatePage() captures each Inserter that was not used to replace an inserter here
+/// so a later call to ReportErrors() can use these to report errors.
+/// </summary>
+      protected List<InserterContainer> _insertersRemaining;
 
 /// <summary>
 /// Creates the regular expression used by UpdatePanel to find markup
@@ -235,11 +282,67 @@ namespace InsertionsManagement
          {
             if (String.Compare(inserterContainer.InterfaceType.Name, interfaceName, StringComparison.Ordinal) == 0) // exact match
                if (String.Compare(inserterContainer.Group, groupName, StringComparison.OrdinalIgnoreCase) == 0)
+               {
+                  _insertersRemaining.Remove(inserterContainer);
                   return inserterContainer.Inserter.GetContent(_httpContext);
+               }
          }
          return String.Empty;
       }
 
+
+/// <summary>
+/// Call after UpdatePage to deliver a list of missing Insertion Points,
+/// where content added to the InsertionsManager but that code never made it to the page.
+/// Determines how to report the error from the InsertionsManager.ReportsErrorMode global property.
+/// </summary>
+      public virtual void ReportErrors(HttpContextBase httpContext)
+      {
+         ReportErrors(httpContext, InsertionsManager.ReportErrorsMode);
+      }
+
+/// <summary>
+/// Call after UpdatePage to deliver a list of missing Insertion Points,
+/// where content added to the InsertionsManager but that code never made it to the page.
+/// </summary>
+      public virtual void ReportErrors(HttpContextBase httpContext, ReportErrorsMode reportErrorsMode)
+      {
+         if ((reportErrorsMode == InsertionsManagement.ReportErrorsMode.None) || (_insertersRemaining == null) || (_insertersRemaining.Count == 0))
+            return;
+
+         StringBuilder errorMessage = new StringBuilder();
+
+         bool first = true;
+         errorMessage.Append("Content was added to the InsertionsManager but not output because the page lacks an Insertion Point. The following Insertion Points are needed: ");
+         foreach (var item in _insertersRemaining)
+         {
+            if (!first)
+               errorMessage.Append("; ");
+            string interfaceName = item.InterfaceType.Name;
+            if (interfaceName.StartsWith("I"))
+               interfaceName = interfaceName.Remove(0, 1);
+            if (interfaceName.EndsWith("Inserter", StringComparison.OrdinalIgnoreCase))
+               interfaceName = interfaceName.Remove(interfaceName.Length - "Inserter".Length);
+
+            errorMessage.Append("\"");
+            errorMessage.Append(interfaceName);
+            if (!String.IsNullOrEmpty(item.Group))
+            {
+               errorMessage.Append(":");
+               errorMessage.Append(item.Group);
+            }
+            errorMessage.Append("\"");
+            first = false;
+         }
+         switch (reportErrorsMode)
+         {
+            case InsertionsManagement.ReportErrorsMode.Trace:
+               httpContext.Trace.Warn("InsertionsManager", errorMessage.ToString());
+               break;
+            case InsertionsManagement.ReportErrorsMode.Exception:
+               throw new InvalidOperationException(errorMessage.ToString());
+         }
+      }
 
 /// <summary>
 /// If needed, calls UpdatePage()
@@ -305,6 +408,25 @@ namespace InsertionsManagement
 
          public IInserter Inserter { get; protected set; }
       }
+   }
+
+/// <summary>
+/// Associated with the ReportErrorsMode property on InsertionsManager.
+/// </summary>
+   public enum ReportErrorsMode
+   {
+/// <summary>
+/// Do not output errors
+/// </summary>
+      None,
+/// <summary>
+/// Write to the trace log
+/// </summary>
+      Trace,
+/// <summary>
+/// Throw an exception.
+/// </summary>
+      Exception
    }
 
 
