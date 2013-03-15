@@ -366,17 +366,20 @@ style='color:maroon'>body</span><span style='color:blue'>&gt;</span><span
 style='color:black'></span></pre>
 <h3><a name="gettingStarted">Getting started</a></h3>
 <ul>
-<li>Download InsertionsManager using the <a href="https://github.com/plblum/InsertionsManager/downloads" target="_blank">Downloads</a> button on the InsertionsManager home page.</li>
 <li>Add the InsertionsManagement.dll assembly to your ASP.NET MVC web application. Requires MVC 3.0 or higher.
      (Alternatively, add the source code project and set a reference from your
-     application to it.)</li>
+     application to it.)
+	  <br />
+	  You can add it either using the NuGet Package Manager in Visual Studio or by going here:<br />
+	  <a href="https://github.com/plblum/InsertionsManager/blob/master/Assemblies/InsertionsManager.dll?raw=true">Retrieve assembly</a>
+	  </li>
 <li>In Application_Start, add this code:<br />
 <pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>ViewEngines.Engines.Clear();<br />ViewEngines.Engines.Add(new InsertionsManagement.IMRazorViewEngine());</pre>
 </li>
 <li>Add the customary Insertion Points to the master page, as shown in the <a href="#Example">Example above</a>.</li>
 <li>Add @using InsertionsManagement to each View and Html Helper that will use this tool.</li>
 <li>Call methods on this.InsertionsManager() to add content. Methods include AddScriptFile(),
-AddStyleFile(), AddUpperScriptBlock(), AddLowerScriptBlock(), AddMetaTag(), AddHiddenField(),
+AddStyleFile(), AddScriptBlock(), AddMetaTag(), AddHiddenField(),
 ArrayDeclaration(), and AddPlaceholder().<br />
 <em>Examples:</em><br />
 <pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>this.InsertionsManager().AddScriptFile("~/Scripts/jquery-1.9.1.js");</pre>
