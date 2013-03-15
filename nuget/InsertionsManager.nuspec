@@ -4,7 +4,7 @@
       <id>InsertionsManager</id>
       <version>0.0.1-alpha</version>
       <authors>Peter L. Blum</authors>
-      <description>Use within ASP.NET MVC Razor Views to let your Partial Views and Html Helpers insert their scripts and style sheets into the appropriate areas of the page. Often their locations are defined in a different View file such as the master page.</description>
+      <description>Use within ASP.NET MVC Razor Views to let your Partial Views and Html Helpers insert their scripts, style sheets, and other content into the appropriate areas of the page. Often their locations are defined in a different View file such as the master page.</description>
       <language>en-US</language>
       <projectUrl>https://github.com/plblum/InsertionsManager</projectUrl>
       <licenseUrl>https://github.com/plblum/InsertionsManager/blob/master/LICENSE.txt</licenseUrl>
