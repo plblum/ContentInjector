@@ -62,6 +62,7 @@ local.properties
 *.vspscc
 .builds
 *.dotCover
+packages.config
 
 # NuGet Package Restore
 packages/
