@@ -6,6 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{43725FFF-C600-40E2-9DC5-84B2ACA1E445}"
 	ProjectSection(SolutionItems) = preProject
 		InsertionsManager for MVC.vsmdi = InsertionsManager for MVC.vsmdi
+		InsertionsManager.nuspec = InsertionsManager.nuspec
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
