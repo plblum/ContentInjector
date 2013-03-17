@@ -1,17 +1,7 @@
-﻿@using InsertionsManagement
-
-@{
-    
-// this is a shorthand for the commented out code. It uses extension methods which requires you declare @using InsertionsManager like above.    
-    this.InsertionsManager().AddScriptFile("~/Scripts/jquery-1.5.1.min.js");
-    this.InsertionsManager().AddScriptFile("~/Scripts/modernizr-1.7.min.js");
-    this.InsertionsManager().AddStyleFile("~/Content/Site.css");
-/* Same as above
-    var insertionsManager = this.InsertionsManager();
-    insertionsManager.Access<IScriptFileInserter>().Add("~/Scripts/jquery-1.5.1.min.js");
-    insertionsManager.Access<IScriptFileInserter>().Add("~/Scripts/modernizr-1.7.min.js");
-    insertionsManager.Access<IStyleFileInserter>().Add("~/Content/Site.css");
- */
+﻿@{
+    Injector.ScriptFile("~/Scripts/jquery-1.5.1.min.js");
+    Injector.ScriptFile("~/Scripts/modernizr-1.7.min.js");
+    Injector.StyleFile("~/Content/Site.css");
 }
 <!DOCTYPE html>
 <html>
@@ -19,14 +9,14 @@
     <title>@ViewBag.Title</title>
 
     <meta charset="utf-8" />
-   <!-- replace-with="MetaTags" -->
-   <!-- replace-with="StyleFiles" -->
-   <!-- replace-with="ScriptFiles" -->
+   @Injector.InjectionPoint("MetaTags")
+   @Injector.InjectionPoint("StyleFiles")
+   @Injector.InjectionPoint("ScriptFiles")
 </head>
 
 <body>
-   <!-- replace-with="ScriptBlocks:Upper" -->
+    @Injector.InjectionPoint("ScriptBlocks", "Upper")
     @RenderBody()
-   <!-- replace-with="ScriptBlocks:Lower" -->
+    @Injector.InjectionPoint("ScriptBlocks", "Lower")
 </body>
 </html>

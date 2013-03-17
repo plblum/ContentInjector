@@ -3,12 +3,12 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InsertionsManagement;
+using ContentInjector;
 
 namespace UnitTest
 {
    [TestClass]
-   public class TestHiddenFieldsInserter : BaseInserter
+   public class TestHiddenFieldsInjector : BaseInjector
    {
 
       public static string CreateExpected(params string[] pairs)
@@ -22,7 +22,7 @@ namespace UnitTest
          {
             string name = pairs[i];
             string value = pairs[i + 1];
-            sb.AppendLine(String.Format(HiddenFieldsInserter.HiddenFieldPattern, name, value));
+            sb.AppendLine(String.Format(HiddenFieldsInjector.HiddenFieldPattern, name, value));
          }
          return sb.ToString();
       }
@@ -30,29 +30,29 @@ namespace UnitTest
       [TestMethod]
       public void TestEmpty()
       {
-         HiddenFieldsInserter inserter = new HiddenFieldsInserter();
+         HiddenFieldsInjector inserter = new HiddenFieldsInjector();
          Assert.AreEqual(0, inserter.CountKeys());
          string expected = CreateExpected();
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestOne()
       {
-         HiddenFieldsInserter inserter = new HiddenFieldsInserter();
+         HiddenFieldsInjector inserter = new HiddenFieldsInjector();
          string name = "NAME1";
          string value = "VALUE1";
          inserter.Add(name, value);
          Assert.IsTrue(inserter.Contains(name));
 
          string expected = CreateExpected(name, value);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestDuplicates()
       {
-         HiddenFieldsInserter inserter = new HiddenFieldsInserter();
+         HiddenFieldsInjector inserter = new HiddenFieldsInjector();
          string name = "NAME1";
          string value = "VALUE1";
          inserter.Add(name, value);
@@ -62,13 +62,13 @@ namespace UnitTest
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expected = CreateExpected(name, value);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestTwo()
       {
-         HiddenFieldsInserter inserter = new HiddenFieldsInserter();
+         HiddenFieldsInjector inserter = new HiddenFieldsInjector();
          string name1 = "NAME1";
          string value1 = "VALUE1";
          string name2 = "NAME2";
@@ -84,13 +84,13 @@ namespace UnitTest
          Assert.AreEqual(2, inserter.CountKeys());
 
          string expected = CreateExpected(name1, value1, name2, value2);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestOrderedTwo()
       {
-         HiddenFieldsInserter inserter = new HiddenFieldsInserter();
+         HiddenFieldsInjector inserter = new HiddenFieldsInjector();
          string name1 = "NAME1";
          string value1 = "VALUE1";
          string name2 = "NAME2";
@@ -106,7 +106,7 @@ namespace UnitTest
          Assert.AreEqual(2, inserter.CountKeys());
 
          string expected = CreateExpected(name2, value2, name1, value1);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
 

@@ -3,12 +3,12 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InsertionsManagement;
+using ContentInjector;
 
 namespace UnitTest
 {
    [TestClass]
-   public class TestStyleFileInserter : BaseInserter
+   public class TestStyleFileInjector : BaseInjector
    {
       public static string CreateExpected(params string[] urls)
       {
@@ -16,7 +16,7 @@ namespace UnitTest
             return String.Empty;
          StringBuilder sb = new StringBuilder();
          foreach (string url in urls)
-            sb.AppendLine(String.Format(StyleFilesInserter.StyleFileTagPattern, url));
+            sb.AppendLine(String.Format(StyleFilesInjector.StyleFileTagPattern, url));
          return sb.ToString();
       }
 
@@ -24,28 +24,28 @@ namespace UnitTest
       [TestMethod]
       public void TestEmpty()
       {
-         StyleFilesInserter inserter = new StyleFilesInserter();
+         StyleFilesInjector inserter = new StyleFilesInjector();
          Assert.AreEqual(0, inserter.CountKeys());
          string expected = CreateExpected(); 
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestOne()
       {
-         StyleFilesInserter inserter = new StyleFilesInserter();
+         StyleFilesInjector inserter = new StyleFilesInjector();
          string Url = "/Test.css";
          inserter.Add(Url);
          Assert.IsTrue(inserter.Contains(Url));
 
          string expected = CreateExpected(Url); 
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestDuplicates()
       {
-         StyleFilesInserter inserter = new StyleFilesInserter();
+         StyleFilesInjector inserter = new StyleFilesInjector();
          string Url = "/Test.css";
          inserter.Add(Url);
          Assert.IsTrue(inserter.Contains(Url));
@@ -53,13 +53,13 @@ namespace UnitTest
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expected = CreateExpected(Url); 
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestTwo()
       {
-         StyleFilesInserter inserter = new StyleFilesInserter();
+         StyleFilesInjector inserter = new StyleFilesInjector();
          string Url1 = "/Test1.css";
          string Url2 = "/Test2.css";
          Assert.IsFalse(inserter.Contains(Url1));
@@ -73,13 +73,13 @@ namespace UnitTest
          Assert.AreEqual(2, inserter.CountKeys());
 
          string expected = CreateExpected(Url1, Url2); 
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestOrderedTwo()
       {
-         StyleFilesInserter inserter = new StyleFilesInserter();
+         StyleFilesInjector inserter = new StyleFilesInjector();
          string Url1 = "/Test1.css";
          string Url2 = "/Test2.css";
          Assert.IsFalse(inserter.Contains(Url1));
@@ -93,7 +93,7 @@ namespace UnitTest
          Assert.AreEqual(2, inserter.CountKeys());
 
          string expected = CreateExpected(Url2, Url1); 
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
 

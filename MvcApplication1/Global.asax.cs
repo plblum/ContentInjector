@@ -37,7 +37,7 @@ namespace MvcApplication1
          RegisterRoutes(RouteTable.Routes);
 
          ViewEngines.Engines.Clear();
-         ViewEngines.Engines.Add(new InsertionsManagement.IMRazorViewEngine());
+         ViewEngines.Engines.Add(new ContentInjector.CIRazorViewEngine());
       }
    }
 }

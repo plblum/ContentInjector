@@ -3,12 +3,12 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InsertionsManagement;
+using ContentInjector;
 
 namespace UnitTest
 {
    [TestClass]
-   public class TestMetaTagsInserter : BaseInserter
+   public class TestMetaTagsInjector : BaseInjector
    {
 
       public static string CreateExpected(params string[] pairs)
@@ -22,7 +22,7 @@ namespace UnitTest
          {
             string name = pairs[i];
             string content = pairs[i + 1];
-            sb.AppendLine(String.Format(MetaTagsInserter.MetaTagPattern, name, content, "name"));
+            sb.AppendLine(String.Format(MetaTagsInjector.MetaTagPattern, name, content, "name"));
          }
          return sb.ToString();
       }
@@ -30,29 +30,29 @@ namespace UnitTest
       [TestMethod]
       public void TestEmpty()
       {
-         MetaTagsInserter inserter = new MetaTagsInserter();
+         MetaTagsInjector inserter = new MetaTagsInjector();
          Assert.AreEqual(0, inserter.CountKeys());
          string expected = CreateExpected();
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestOne()
       {
-         MetaTagsInserter inserter = new MetaTagsInserter();
+         MetaTagsInjector inserter = new MetaTagsInjector();
          string name = "NAME1";
          string content = "CONTENT1";
          inserter.Add(name, content);
          Assert.IsTrue(inserter.Contains(name));
 
          string expected = CreateExpected(name, content);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestDuplicates()
       {
-         MetaTagsInserter inserter = new MetaTagsInserter();
+         MetaTagsInjector inserter = new MetaTagsInjector();
          string name = "NAME1";
          string content = "CONTENT1";
          inserter.Add(name, content);
@@ -62,13 +62,13 @@ namespace UnitTest
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expected = CreateExpected(name, content);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestTwo()
       {
-         MetaTagsInserter inserter = new MetaTagsInserter();
+         MetaTagsInjector inserter = new MetaTagsInjector();
          string name1 = "NAME1";
          string content1 = "CONTENT1";
          string name2 = "NAME2";
@@ -84,13 +84,13 @@ namespace UnitTest
          Assert.AreEqual(2, inserter.CountKeys());
 
          string expected = CreateExpected(name1, content1, name2, content2);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
       [TestMethod]
       public void TestOrderedTwo()
       {
-         MetaTagsInserter inserter = new MetaTagsInserter();
+         MetaTagsInjector inserter = new MetaTagsInjector();
          string name1 = "NAME1";
          string content1 = "CONTENT1";
          string name2 = "NAME2";
@@ -106,7 +106,7 @@ namespace UnitTest
          Assert.AreEqual(2, inserter.CountKeys());
 
          string expected = CreateExpected(name2, content2, name1, content1);
-         TestInserter(inserter, expected);
+         TestInjector(inserter, expected);
       }
 
 

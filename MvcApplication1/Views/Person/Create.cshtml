@@ -1,16 +1,9 @@
-﻿@using InsertionsManagement
-@model MvcApplication1.Models.Person
+﻿@model MvcApplication1.Models.Person
 
 @{
     ViewBag.Title = "Create";
-// this is a shorthand for the commented out code. It uses extension methods which requires you declare @using InsertionsManager like above.    
-    this.InsertionsManager().AddScriptFile("~/Scripts/jquery.validate.min.js", 10);
-    this.InsertionsManager().AddScriptFile("~/Scripts/jquery.validate.unobtrusive.min.js", 11);
-/*  same as above
-    var insertionsManager = this.InsertionsManager();
-    insertionsManager.Access<IScriptFileInserter>().Add("~/Scripts/jquery.validate.min.js", 10);
-    insertionsManager.Access<IScriptFileInserter>().Add("~/Scripts/jquery.validate.unobtrusive.min.js", 11);
- */ 
+    Injector.ScriptFile("~/Scripts/jquery.validate.min.js", 10);
+    Injector.ScriptFile("~/Scripts/jquery.validate.unobtrusive.min.js", 11);
 }
 
 <h2>Create</h2>

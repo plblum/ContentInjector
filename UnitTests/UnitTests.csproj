@@ -64,9 +64,9 @@
     <Compile Include="TestInsertionsManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\InsertionsManagement.csproj">
+    <ProjectReference Include="..\src\ContentInjector.csproj">
       <Project>{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}</Project>
-      <Name>InsertionsManagement</Name>
+      <Name>ContentInjector</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

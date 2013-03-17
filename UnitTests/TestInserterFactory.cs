@@ -3,105 +3,105 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InsertionsManagement;
+using ContentInjector;
 
 namespace UnitTest
 {
    [TestClass]
-   public class TestInserterFactory
+   public class TestInjectorFactory
    {
       [TestMethod]
       public void TestFactoryInstance()
       {
-         InserterFactory factory = new InserterFactory();
-         IInserter testInserter = factory.Create(typeof(IScriptFilesInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IScriptFilesInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(ScriptFilesInserter));
+         InjectorFactory factory = new InjectorFactory();
+         IInjector testInjector = factory.Create(typeof(IScriptFilesInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IScriptFilesInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(ScriptFilesInjector));
 
-         testInserter = factory.Create(typeof(IStyleFilesInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IStyleFilesInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(StyleFilesInserter));
+         testInjector = factory.Create(typeof(IStyleFilesInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IStyleFilesInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(StyleFilesInjector));
 
-         testInserter = factory.Create(typeof(IMetaTagsInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IMetaTagsInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(MetaTagsInserter));
+         testInjector = factory.Create(typeof(IMetaTagsInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IMetaTagsInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(MetaTagsInjector));
 
-         testInserter = factory.Create(typeof(IScriptBlocksInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IScriptBlocksInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(ScriptBlocksInserter));
+         testInjector = factory.Create(typeof(IScriptBlocksInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IScriptBlocksInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(ScriptBlocksInjector));
 
-         testInserter = factory.Create(typeof(IPlaceholderInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IPlaceholderInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(PlaceholderInserter));
+         testInjector = factory.Create(typeof(IPlaceholderInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IPlaceholderInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(PlaceholderInjector));
 
-         testInserter = factory.Create(typeof(IHiddenFieldsInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IHiddenFieldsInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(HiddenFieldsInserter));
+         testInjector = factory.Create(typeof(IHiddenFieldsInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IHiddenFieldsInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(HiddenFieldsInjector));
 
       }
 
       [TestMethod]
       public void TestDefaultFactory()
       {
-         InserterFactory factory = InserterFactory.Default;
-         IInserter testInserter = factory.Create(typeof(IScriptFilesInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IScriptFilesInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(ScriptFilesInserter));
+         InjectorFactory factory = InjectorFactory.Default;
+         IInjector testInjector = factory.Create(typeof(IScriptFilesInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IScriptFilesInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(ScriptFilesInjector));
 
-         testInserter = factory.Create(typeof(IStyleFilesInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IStyleFilesInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(StyleFilesInserter));
+         testInjector = factory.Create(typeof(IStyleFilesInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IStyleFilesInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(StyleFilesInjector));
 
-         testInserter = factory.Create(typeof(IMetaTagsInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IMetaTagsInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(MetaTagsInserter));
+         testInjector = factory.Create(typeof(IMetaTagsInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IMetaTagsInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(MetaTagsInjector));
 
-         testInserter = factory.Create(typeof(IScriptBlocksInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IScriptBlocksInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(ScriptBlocksInserter));
+         testInjector = factory.Create(typeof(IScriptBlocksInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IScriptBlocksInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(ScriptBlocksInjector));
 
-         testInserter = factory.Create(typeof(IPlaceholderInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IPlaceholderInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(PlaceholderInserter));
+         testInjector = factory.Create(typeof(IPlaceholderInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IPlaceholderInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(PlaceholderInjector));
 
 
-         testInserter = factory.Create(typeof(IHiddenFieldsInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IHiddenFieldsInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(HiddenFieldsInserter));
+         testInjector = factory.Create(typeof(IHiddenFieldsInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IHiddenFieldsInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(HiddenFieldsInjector));
       }
 
       [TestMethod]
       public void TestReplace()
       {
-         InserterFactory factory = new InserterFactory();
+         InjectorFactory factory = new InjectorFactory();
 
-         IInserter testInserter = factory.Create(typeof(IScriptFilesInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IScriptFilesInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(ScriptFilesInserter));
+         IInjector testInjector = factory.Create(typeof(IScriptFilesInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IScriptFilesInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(ScriptFilesInjector));
 
-         factory.Register(typeof(IScriptFilesInserter), typeof(CustomScriptFileInserter));
-         testInserter = factory.Create(typeof(IScriptFilesInserter));
-         Assert.IsNotNull(testInserter);
-         Assert.IsInstanceOfType(testInserter, typeof(IScriptFilesInserter));
-         Assert.IsInstanceOfType(testInserter, typeof(CustomScriptFileInserter));
+         factory.Register(typeof(IScriptFilesInjector), typeof(CustomScriptFileInjector));
+         testInjector = factory.Create(typeof(IScriptFilesInjector));
+         Assert.IsNotNull(testInjector);
+         Assert.IsInstanceOfType(testInjector, typeof(IScriptFilesInjector));
+         Assert.IsInstanceOfType(testInjector, typeof(CustomScriptFileInjector));
       }
 
 
 
-      private class CustomScriptFileInserter : ScriptFilesInserter
+      private class CustomScriptFileInjector : ScriptFilesInjector
       {
       }
    }

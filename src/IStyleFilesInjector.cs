@@ -1,3 +1,4 @@
+﻿/* -----------------------------------------------------------
 ContentInjector for ASP.NET MVC
 Copyright (C) 2013  Peter L. Blum
 
@@ -13,3 +14,20 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+------------------------------------------------------------*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ContentInjector
+{
+
+/// <summary>
+/// Specifies a link tag to a style sheet file with its href
+/// attribute pointing to that file.
+/// </summary>
+   public interface IStyleFilesInjector : IBaseTagsWithUrlInjector
+   {
+   }
+}

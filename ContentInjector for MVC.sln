@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApplication1", "MvcApplication1\MvcApplication1.csproj", "{89A4E61A-E13D-4A82-BBCE-69D0721D862E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{43725FFF-C600-40E2-9DC5-84B2ACA1E445}"
+	ProjectSection(SolutionItems) = preProject
+		ContentInjector for MVC.vsmdi = ContentInjector for MVC.vsmdi
+		ContentInjector.nuspec = ContentInjector.nuspec
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{D9C671A5-6D49-434B-8D22-3C49F75644BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentInjector", "src\ContentInjector.csproj", "{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = ContentInjector for MVC.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CodeCoverage|Any CPU = CodeCoverage|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		FxCop|Any CPU = FxCop|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.CodeCoverage|Any CPU.ActiveCfg = Release|Any CPU
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.CodeCoverage|Any CPU.Build.0 = Release|Any CPU
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.FxCop|Any CPU.ActiveCfg = Release|Any CPU
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.FxCop|Any CPU.Build.0 = Release|Any CPU
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89A4E61A-E13D-4A82-BBCE-69D0721D862E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.CodeCoverage|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.CodeCoverage|Any CPU.Build.0 = Release|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.FxCop|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.FxCop|Any CPU.Build.0 = Release|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C671A5-6D49-434B-8D22-3C49F75644BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.CodeCoverage|Any CPU.ActiveCfg = Release|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.CodeCoverage|Any CPU.Build.0 = Release|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.FxCop|Any CPU.ActiveCfg = Release|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.FxCop|Any CPU.Build.0 = Release|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F09B42-3D7C-401D-A61A-0057C1DE1AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

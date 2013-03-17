@@ -3,12 +3,12 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InsertionsManagement;
+using ContentInjector;
 
 namespace UnitTest
 {
    [TestClass]
-   public class TestArrayDeclarationInserterItem
+   public class TestArrayDeclarationInjectorItem
    {
 
       public static string CreateExpected(string variableName, params string[] elements)
@@ -34,7 +34,7 @@ namespace UnitTest
       public void TestEmpty()
       {
          string varName = "varName1";
-         ArrayDeclarationInserterItem item = new ArrayDeclarationInserterItem(varName);
+         ArrayDeclarationInjectorItem item = new ArrayDeclarationInjectorItem(varName);
 
          string expected = CreateExpected(varName);
          Assert.AreEqual(expected, item.GetScript());
@@ -45,7 +45,7 @@ namespace UnitTest
       public void TestInts()
       {
          string varName = "varName1";
-         ArrayDeclarationInserterItem item = new ArrayDeclarationInserterItem(varName);
+         ArrayDeclarationInjectorItem item = new ArrayDeclarationInjectorItem(varName);
          item.Add(1);
          item.Add((short)2);
          item.Add((long)3);
@@ -58,7 +58,7 @@ namespace UnitTest
       public void TestDecimals()
       {
          string varName = "varName1";
-         ArrayDeclarationInserterItem item = new ArrayDeclarationInserterItem(varName);
+         ArrayDeclarationInjectorItem item = new ArrayDeclarationInjectorItem(varName);
          item.Add(1.5);
          item.Add((Single)2.5);
          item.Add(3.5M);
@@ -71,7 +71,7 @@ namespace UnitTest
       public void TestStrings()
       {
          string varName = "varName1";
-         ArrayDeclarationInserterItem item = new ArrayDeclarationInserterItem(varName);
+         ArrayDeclarationInjectorItem item = new ArrayDeclarationInjectorItem(varName);
          item.Add("abc");
          item.Add("ab\"c");
          item.Add("abc<hi>");
@@ -85,7 +85,7 @@ namespace UnitTest
       public void TestBoolean()
       {
          string varName = "varName1";
-         ArrayDeclarationInserterItem item = new ArrayDeclarationInserterItem(varName);
+         ArrayDeclarationInjectorItem item = new ArrayDeclarationInjectorItem(varName);
          item.Add(true);
          item.Add(false);
 
@@ -97,7 +97,7 @@ namespace UnitTest
       public void TestCode()
       {
          string varName = "varName1";
-         ArrayDeclarationInserterItem item = new ArrayDeclarationInserterItem(varName);
+         ArrayDeclarationInjectorItem item = new ArrayDeclarationInjectorItem(varName);
          item.Add(1.5);
          item.AddCode("alert('hi')");
          item.Add(3.5M);
