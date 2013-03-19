@@ -44,4 +44,5 @@ namespace ContentInjector
 /// <returns></returns>
       string GetContent(HttpContextBase httpContext);
    }
+
 }

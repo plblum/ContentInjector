@@ -29,5 +29,11 @@ namespace ContentInjector
 /// </summary>
    public interface IStyleFilesInjector : IBaseTagsWithUrlInjector
    {
+/// <summary>
+/// Add a StyleFileInjectorItem with a specific order.
+/// </summary>
+/// <param name="order"></param>
+/// <param name="item"></param>
+      void Add(StyleFileInjectorItem item, int order = 0);
    }
 }

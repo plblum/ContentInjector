@@ -24,47 +24,27 @@ using System.Web;
 namespace ContentInjector
 {
 /// <summary>
-/// Creates a single HTML tag that hosts a URL, such as a script or link tag.
+/// Creates an HTML tag that uses a URL, such as a script or link tag.
 /// </summary>
 /// <remarks>
+/// <para>The supporting BaseFileInjectorItem class normally outputs a single
+/// HTML tag. But subclasses can collect multiple URLs and other identifiers
+/// that are used to construct the final content, which may be one or more 
+/// HTML tags.</para>
 /// </remarks>
-   public abstract class BaseTagsWithUrlInjector : BaseKeyedInjector<UrlInjectorItem>
+   public abstract class BaseFilesInjector : BaseKeyedInjector<BaseFileInjectorItem>
    {
-#if false
-      #region IInjector Members
-
-      public override string GetContent(HttpContextBase httpContext)
+      protected override void ItemContent(BaseFileInjectorItem item, StringBuilder sb, HttpContextBase httpContext)
       {
-         StringBuilder sb = new StringBuilder();
-         foreach (var orders in _orderedList)
-         {
-            foreach (UrlInjectorItem items in orders.Value)
-            {
-               sb.AppendLine(GetTag(items.Url, httpContext));
-            }
-         }
-
-         return sb.ToString();
-      }
-      #endregion
-#endif
-      protected override void ItemContent(UrlInjectorItem item, StringBuilder sb, HttpContextBase httpContext)
-      {
-         sb.AppendLine(GetTag(item.Url, httpContext));
+         sb.AppendLine(item.GetContent(httpContext));
       }
 
-/// <summary>
-/// Creates the HTML tag based on the URL.
-/// </summary>
-/// <param name="url">NOTE: url is already converted from virtual to absolute path</param>
-/// <returns></returns>
-      protected abstract string GetTag(string url, HttpContextBase httpContext);
 
       protected override IComparer<string> GetComparer()
       {
          return StringComparer.OrdinalIgnoreCase;
       }
-
+#if false
 /// <summary>
 /// Adds with the default order but does not add a duplicate URL (case insensitive match).
 /// </summary>
@@ -82,11 +62,29 @@ namespace ContentInjector
 /// <param name="order"></param>
       public virtual void Add(string url, int order)
       {
-         url = VirtualPathUtility.ToAbsolute(url);
+         if (ConvertVirtualPaths())
+            url = VirtualPathUtility.ToAbsolute(url);
          if (!Contains(url))
-            Add(new UrlInjectorItem(url), order);
+            Add(CreateInjectorItem(url), order);
 
       }
+
+/// <summary>
+/// Indicates whether the virtual path notation "~/" should
+/// be converted to an absolute path.
+/// </summary>
+/// <returns></returns>
+      protected virtual bool ConvertVirtualPaths()
+      {
+         return true;
+      }
+#endif
+/// <summary>
+/// Creates the FileInjectorItem class used by the Add() method.
+/// </summary>
+/// <param name="url"></param>
+/// <returns></returns>
+      protected abstract BaseFileInjectorItem CreateInjectorItem(string url);
    }
 
 }

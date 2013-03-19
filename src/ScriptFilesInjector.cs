@@ -39,9 +39,14 @@ namespace ContentInjector
 /// <para>Other interfaces can handle specific blocks, like IJQueryValidateRulesBlockInjector,
 /// to collect all jquery validation rules. These are left to the user.</para>
 /// </remarks>
-   public class ScriptFilesInjector : BaseTagsWithUrlInjector, IScriptFilesInjector
+   public class ScriptFilesInjector : BaseFilesInjector, IScriptFilesInjector
    {
-
+#if true
+      protected override BaseFileInjectorItem CreateInjectorItem(string url)
+      {
+         return new ScriptFileInjectorItem(url);
+      }
+#else
       protected override string GetTag(string url, HttpContextBase httpContext)
       {
          return String.Format(ScriptFileTagPattern, url); // NOTE: url is already converted from virtual to absolute path
@@ -52,5 +57,15 @@ namespace ContentInjector
 /// Always use {0} to indicate where the URL is inserted.
 /// </summary>
       public static string ScriptFileTagPattern = "<script src=\"{0}\" type=\"text/javascript\"></script>";
+#endif
+
+      #region IScriptFilesInjector Members
+
+      public void Add(ScriptFileInjectorItem item, int order = 0)
+      {
+         base.Add(item, order);
+      }
+
+      #endregion
    }
 }

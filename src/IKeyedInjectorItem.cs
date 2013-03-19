@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace ContentInjector
 {
@@ -36,5 +37,22 @@ namespace ContentInjector
    {
       string GetKey();
       void SetKey(string key);
+
+/// <summary>
+/// When adding a new item with the same key, call this on the existing
+/// item, passing in the new item. It will determine how to use the new item,
+/// either by updating itself or ignoring the item. In either case,
+/// the new item will be discarded and should not be added to the _orderedList
+/// or _sortedByKey collections of the caller.
+/// </summary>
+/// <param name="item"></param>
+/// <returns>When true, the item was updated. When false, the item was ignored.</returns>
+      bool Merge(IKeyedInjectorItem item);
+
+/// <summary>
+/// Converts the data into the string that will be output by the Inserter.
+/// </summary>
+/// <returns></returns>
+      string GetContent(HttpContextBase httpContext);
    }
 }

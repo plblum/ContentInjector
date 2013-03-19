@@ -16,8 +16,8 @@ namespace UnitTest
             return String.Empty;
          StringBuilder sb = new StringBuilder();
          foreach (string url in urls)
-            sb.AppendLine(String.Format(StyleFilesInjector.StyleFileTagPattern, url));
-         return sb.ToString();
+            sb.AppendLine(String.Format(StyleFileInjectorItem.DefaultStyleFileTagFormat, url));
+         return sb.ToString().TrimEnd('\r', '\n');
       }
 
 
@@ -35,7 +35,7 @@ namespace UnitTest
       {
          StyleFilesInjector inserter = new StyleFilesInjector();
          string Url = "/Test.css";
-         inserter.Add(Url);
+         inserter.Add(new StyleFileInjectorItem(Url));
          Assert.IsTrue(inserter.Contains(Url));
 
          string expected = CreateExpected(Url); 
@@ -47,9 +47,9 @@ namespace UnitTest
       {
          StyleFilesInjector inserter = new StyleFilesInjector();
          string Url = "/Test.css";
-         inserter.Add(Url);
+         inserter.Add(new StyleFileInjectorItem(Url));
          Assert.IsTrue(inserter.Contains(Url));
-         inserter.Add(Url);   // should not add another as its a duplicate
+         inserter.Add(new StyleFileInjectorItem(Url));   // should not add another as its a duplicate
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expected = CreateExpected(Url); 
@@ -64,10 +64,10 @@ namespace UnitTest
          string Url2 = "/Test2.css";
          Assert.IsFalse(inserter.Contains(Url1));
          Assert.IsFalse(inserter.Contains(Url2));
-         inserter.Add(Url1);
+         inserter.Add(new StyleFileInjectorItem(Url1));
          Assert.IsTrue(inserter.Contains(Url1));
          Assert.IsFalse(inserter.Contains(Url2));
-         inserter.Add(Url2);
+         inserter.Add(new StyleFileInjectorItem(Url2));
          Assert.IsTrue(inserter.Contains(Url1));
          Assert.IsTrue(inserter.Contains(Url2));
          Assert.AreEqual(2, inserter.CountKeys());
@@ -84,10 +84,10 @@ namespace UnitTest
          string Url2 = "/Test2.css";
          Assert.IsFalse(inserter.Contains(Url1));
          Assert.IsFalse(inserter.Contains(Url2));
-         inserter.Add(Url1, 10);
+         inserter.Add(new StyleFileInjectorItem(Url1), 10);
          Assert.IsTrue(inserter.Contains(Url1));
          Assert.IsFalse(inserter.Contains(Url2));
-         inserter.Add(Url2, 0); // this will be shown before Url1
+         inserter.Add(new StyleFileInjectorItem(Url2), 0); // this will be shown before Url1
          Assert.IsTrue(inserter.Contains(Url1));
          Assert.IsTrue(inserter.Contains(Url2));
          Assert.AreEqual(2, inserter.CountKeys());

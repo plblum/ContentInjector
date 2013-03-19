@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("ContentInjector")]
 [assembly: AssemblyProduct("Content Injector for ASP.NET MVC")]
-[assembly: AssemblyDescription("Lets your Partial Views and Html Helpers add their scripts,style sheets, and other content into the appropriate areas of the page, often defined in a different View file (such as the master page)")]
+[assembly: AssemblyDescription("Lets your Partial Views and Html Helpers add their scripts, style sheets, and other content into the appropriate areas of the page, often defined in a different View file (such as the master page)")]
 [assembly: AssemblyConfiguration("Requires ASP.NET MVC 3 or higher.")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyCopyright("Copyright © Peter L. Blum 2013")]
@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.1.0")]
-[assembly: AssemblyFileVersion("0.1.1.0")]
+[assembly: AssemblyVersion("0.5.0.0")]
+[assembly: AssemblyFileVersion("0.5.0.0")]

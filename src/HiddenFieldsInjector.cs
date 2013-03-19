@@ -27,50 +27,17 @@ namespace ContentInjector
 /// Creates input type='hidden' fields. Use to group these field types together.
 /// </summary>
 /// <remarks>
-/// Be sure to place the Injection Point into the markup within a form tag block.
+/// <para>Be sure to place the Injection Point into the markup within a form tag block.</para>
+/// <para>If you add a duplicate named hidden field, the value of the existing hidden field will be updated.</para>
 /// </remarks>
    public class HiddenFieldsInjector : BaseKeyedInjector<HiddenFieldInjectorItem>, IHiddenFieldsInjector
    {
-      protected override void ItemContent(HiddenFieldInjectorItem item, StringBuilder sb, HttpContextBase httpContext)
-      {
-         sb.AppendLine(String.Format(HiddenFieldPattern, item.Name, item.Value));
-      }
-
-/// <summary>
-/// The pattern used to create the tag. It is a global in case the user prefers a different pattern.
-/// Always use {0} to indicate where the Name is inserted and {1} where Value is inserted.
-/// </summary>
-      public static string HiddenFieldPattern = "<input type=\"hidden\" name=\"{0}\" value=\"{1}\" />";
-
 
       protected override IComparer<string> GetComparer()
       {
          return StringComparer.OrdinalIgnoreCase;
       }
 
-/// <summary>
-/// Adds with the default order but does not add a duplicate Name (case insensitive match).
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-      public void Add(string name, string value)
-      {
-         Add(name, value, 0);
-      }
-
-
-/// <summary>
-/// Adds but does not add a duplicate Name (case insensitive match).
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public virtual void Add(string name, string value, int order)
-      {
-         if (!Contains(name))
-            Add(new HiddenFieldInjectorItem(name, value), order);
-
-      }
    }
 
 }

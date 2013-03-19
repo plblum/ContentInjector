@@ -35,6 +35,51 @@ namespace ContentInjector
          Elements = new List<string>();
       }
 
+      public ArrayDeclarationInjectorItem(string variableName, string value, bool htmlEncode = true)
+         : this(variableName)
+      {
+         Add(value, htmlEncode);
+      }
+
+
+      public ArrayDeclarationInjectorItem(string variableName, bool value)
+         : this(variableName)
+      {
+         Add(value);
+      }
+
+      public ArrayDeclarationInjectorItem(string variableName, int value)
+         : this(variableName)
+      {
+         Add(value);
+      }
+      public ArrayDeclarationInjectorItem(string variableName, short value)
+         : this(variableName)
+      {
+         Add(value);
+      }
+      public ArrayDeclarationInjectorItem(string variableName, Int64 value)
+         : this(variableName)
+      {
+         Add(value);
+      }
+      public ArrayDeclarationInjectorItem(string variableName, double value)
+         : this(variableName)
+      {
+         Add(value);
+      }
+      public ArrayDeclarationInjectorItem(string variableName, Single value)
+         : this(variableName)
+      {
+         Add(value);
+      }
+      public ArrayDeclarationInjectorItem(string variableName, decimal value)
+         : this(variableName)
+      {
+         Add(value);
+      }
+
+
 /// <summary>
 /// A JavaScript compatible variable name.
 /// </summary>
@@ -67,7 +112,7 @@ namespace ContentInjector
 /// <param name="value"></param>
       public void Add(int value)
       {
-         Elements.Add(value.ToString(CultureInfo.InvariantCulture));
+         Elements.Add(ValuesInJavaScript.ToScript(value));
       }
       
 /// <summary>
@@ -76,7 +121,7 @@ namespace ContentInjector
 /// <param name="value"></param>
       public void Add(short value)
       {
-         Elements.Add(value.ToString(CultureInfo.InvariantCulture));
+         Elements.Add(ValuesInJavaScript.ToScript(value));
       }
 
 /// <summary>
@@ -85,7 +130,7 @@ namespace ContentInjector
 /// <param name="value"></param>
       public void Add(Int64 value)
       {
-         Elements.Add(value.ToString(CultureInfo.InvariantCulture));
+         Elements.Add(ValuesInJavaScript.ToScript(value));
       }
 
 /// <summary>
@@ -94,7 +139,7 @@ namespace ContentInjector
 /// <param name="value"></param>
       public void Add(double value)
       {
-         Elements.Add(value.ToString(CultureInfo.InvariantCulture));
+         Elements.Add(ValuesInJavaScript.ToScript(value));
       }
 
 /// <summary>
@@ -103,7 +148,7 @@ namespace ContentInjector
 /// <param name="value"></param>
       public void Add(Single value)
       {
-         Elements.Add(value.ToString(CultureInfo.InvariantCulture));
+         Elements.Add(ValuesInJavaScript.ToScript(value));
       }
 
 /// <summary>
@@ -112,7 +157,7 @@ namespace ContentInjector
 /// <param name="value"></param>
       public void Add(decimal value)
       {
-         Elements.Add(value.ToString(CultureInfo.InvariantCulture));
+         Elements.Add(ValuesInJavaScript.ToScript(value));
       }
 
 /// <summary>
@@ -123,10 +168,16 @@ namespace ContentInjector
 /// <param name="htmlEncode">Ensures html encoding. If not specified, it defaults to true.</param>
       public void Add(string value, bool htmlEncode = true)
       {
-         if (htmlEncode)
-            Elements.Add("\"" + HttpUtility.HtmlEncode(value) + "\"");
-         else
-            Elements.Add("\"" + value.Replace("\"", "&quot;") + "\"");
+         Elements.Add(ValuesInJavaScript.ToScript(value, htmlEncode));
+      }
+
+/// <summary>
+/// Add a boolean.
+/// </summary>
+/// <param name="value"></param>
+      public void Add(bool value)
+      {
+         Elements.Add(ValuesInJavaScript.ToScript(value));
       }
 
 /// <summary>
@@ -136,16 +187,16 @@ namespace ContentInjector
 /// <param name="value"></param>
       public void AddCode(string value)
       {
-         Elements.Add(value);
+         Elements.Add(ValuesInJavaScript.AsCode(value));
       }
 
 /// <summary>
-/// Add a decimal.
+/// Use when inserting a string representing null.
 /// </summary>
 /// <param name="value"></param>
-      public void Add(bool value)
+      public void AddNull()
       {
-         Elements.Add(value ? "true" : "false");
+         Elements.Add(ValuesInJavaScript.AsNull());
       }
 
       #region IKeyedInjectorItem Members
@@ -160,9 +211,22 @@ namespace ContentInjector
          VariableName = key;
       }
 
+/// <summary>
+/// Existing item has its Elements collection appended
+/// with those in the new item.
+/// </summary>
+/// <param name="item"></param>
+/// <returns>False</returns>
+      public virtual bool Merge(IKeyedInjectorItem item)
+      {
+         Elements.AddRange(((ArrayDeclarationInjectorItem)item).Elements);
+         return true;
+      }
+
+
       #endregion
 
-      public string GetScript()
+      public virtual string GetContent(HttpContextBase context)
       {
          StringBuilder sb = new StringBuilder();
          sb.Append("var ");

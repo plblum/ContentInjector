@@ -23,79 +23,78 @@ using System.Web;
 
 namespace ContentInjector
 {
+
 /// <summary>
-/// Data stored by the BaseScriptBlockInjector class to collect
-/// scripts.
+/// Data stored by the BaseTagWithUrlInjector class to collect
+/// URLs.
 /// </summary>
-   public class ScriptBlockInjectorItem : IScriptBlockInjectorItem
+   public abstract class BaseFileInjectorItem : IKeyedInjectorItem
    {
-      public ScriptBlockInjectorItem(string key, string script)
+      public BaseFileInjectorItem(string fileID)
       {
-         Key = key;
-         Script = script;
+         FileID = fileID;
       }
 
 /// <summary>
-/// This will be assigned a unique key when added to the ScriptBlockInserter.
+/// Identifies the file. This class treats it as URL, but it subclasses may use it for other 
+/// identities, such as a bundle or group name that will be resolved into one or more tags.
 /// </summary>
-/// <param name="script"></param>
-      public ScriptBlockInjectorItem(string script)
+      public string FileID
       {
-         Script = script;
-      }
-/// <summary>
-/// Used to locate an existing item to determine if the script already exists.
-/// </summary>
-      public string Key { get; set; }
-
-/// <summary>
-/// The script of the item.
-/// </summary>
-      public string Script
-      {
-         get { return _script; }
+         get { return _fileID ?? String.Empty; }
          set
          {
-            if (value.StartsWith("<"))
-               throw new ArgumentException("Do not enclose scripts in script tags.");
-            _script = value;
+            _fileID = value;
+            if (ConvertVirtualPaths())
+               _fileID = VirtualPathUtility.ToAbsolute(_fileID);
          }
       }
-      private string _script;
+      private string _fileID;
 
-      public virtual string GetContent(HttpContextBase context)
-      {
-         return Script ?? String.Empty;
-      }
 
       #region IKeyedInjectorItem Members
 
       string IKeyedInjectorItem.GetKey()
       {
-         return Key;
+         return FileID;
       }
 
       void IKeyedInjectorItem.SetKey(string key)
       {
-         Key = key;
+         FileID = key ?? String.Empty;
       }
 
 /// <summary>
-/// Existing item's script is replaced.
+/// Existing item is unchanged.
 /// </summary>
 /// <param name="item"></param>
-/// <returns>True</returns>
+/// <returns>False</returns>
       public virtual bool Merge(IKeyedInjectorItem item)
       {
-         Script = ((ScriptBlockInjectorItem)item).Script;
-         return true;
+         return false;
       }
 
 
       #endregion
+
+/// <summary>
+/// Indicates whether the virtual path notation "~/" should
+/// be converted to an absolute path.
+/// </summary>
+/// <returns></returns>
+      protected virtual bool ConvertVirtualPaths()
+      {
+         return true;
+      }
+
+/// <summary>
+/// Creates the tag(s) based on the data of this object.
+/// </summary>
+/// <param name="httpContext"></param>
+/// <returns></returns>
+      public abstract string GetContent(HttpContextBase httpContext);
    }
 
-   public interface IScriptBlockInjectorItem : IKeyedInjectorItem
-   {
-   }
+
+
 }

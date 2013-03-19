@@ -24,18 +24,6 @@ namespace ContentInjector
 {
    public interface IPlaceholderInjector : IInjector
    {
-/// <summary>
-/// Adds the content. Adds duplicates.
-/// </summary>
-/// <param name="content"></param>
-      void Add(string content);
-
-
-/// <summary>
-/// Adds the content. Adds duplicates.
-/// </summary>
-/// <param name="content"></param>
-/// <param name="order"></param>
-      void Add(string content, int order);
+      void Add(PlaceholderInjectorItem item, int order = 0);
    }
 }

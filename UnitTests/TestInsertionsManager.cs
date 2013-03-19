@@ -206,7 +206,7 @@ namespace UnitTest
          IScriptFilesInjector inserter = manager.Access<IScriptFilesInjector>();
          Assert.IsNotNull(inserter);
          string url1 = "/Test.js";
-         inserter.Add(url1);
+         inserter.Add(new ScriptFileInjectorItem(url1));
 
          contentWriter.Write("abc<!-- Injection-Point='IScriptFilesInjector'-->def"); 
          Assert.AreEqual(0, sb.Length);
@@ -231,9 +231,9 @@ namespace UnitTest
          IScriptFilesInjector inserter = manager.Access<IScriptFilesInjector>();
          Assert.IsNotNull(inserter);
          string url1 = "/Test1.js";
-         inserter.Add(url1);
+         inserter.Add(new ScriptFileInjectorItem(url1));
          string url2 = "/Test2.js";
-         inserter.Add(url2);
+         inserter.Add(new ScriptFileInjectorItem(url2));
 
          contentWriter.Write("abc<!-- Injection-Point='IScriptFilesInjector'-->def"); 
          Assert.AreEqual(0, sb.Length);
@@ -258,12 +258,12 @@ namespace UnitTest
          IScriptFilesInjector inserterG1 = manager.Access<IScriptFilesInjector>("G1");
          Assert.IsNotNull(inserterG1);
          string url1 = "/Test1.js";
-         inserterG1.Add(url1);
+         inserterG1.Add(new ScriptFileInjectorItem(url1));
 
          IScriptFilesInjector inserterG2 = manager.Access<IScriptFilesInjector>("G2");
          Assert.IsNotNull(inserterG2);
          string url2 = "/Test2.js";
-         inserterG2.Add(url2);
+         inserterG2.Add(new ScriptFileInjectorItem(url2));
 
          contentWriter.Write("abc<!-- Injection-Point='IScriptFilesInjector'-->def<!-- Injection-Point='IScriptFilesInjector:G1'-->ghi<!-- Injection-Point='IScriptFilesInjector:g2'-->jkl");   // lowercase g2 to match
          Assert.AreEqual(0, sb.Length);
@@ -287,10 +287,10 @@ namespace UnitTest
          Assert.AreEqual(0, sb.Length);
 
          string url1 = "/Test1.js";
-         manager.Access<IScriptFilesInjector>().Add(url1);
+         manager.Access<IScriptFilesInjector>().Add(new ScriptFileInjectorItem(url1));
 
          string url2 = "/Test2.js";
-         manager.Access<IScriptFilesInjector>().Add(url2);
+         manager.Access<IScriptFilesInjector>().Add(new ScriptFileInjectorItem(url2));
 
          contentWriter.Write("abc<!-- Injection-Point='IScriptFilesInjector'-->def"); 
          Assert.AreEqual(0, sb.Length);
@@ -314,10 +314,10 @@ namespace UnitTest
          Assert.AreEqual(0, sb.Length);
 
          string url1 = "/Test1.js";
-         manager.Access<IScriptFilesInjector>().Add(url1);
+         manager.Access<IScriptFilesInjector>().Add(new ScriptFileInjectorItem(url1));
 
          string url2 = "/Test2.js";
-         manager.Access<IScriptFilesInjector>().Add(url2);
+         manager.Access<IScriptFilesInjector>().Add(new ScriptFileInjectorItem(url2));
 
          contentWriter.Write("abc<!-- Injection-Point='ScriptFiles'-->def"); // name is missing "I" and "Injector" in IScriptFilesInjector.
          Assert.AreEqual(0, sb.Length);
@@ -341,33 +341,33 @@ namespace UnitTest
          Assert.AreEqual(0, sb.Length);
 
          string url1 = "/Test1.js";
-         manager.Access<IScriptFilesInjector>().Add(url1);
+         manager.Access<IScriptFilesInjector>().Add(new ScriptFileInjectorItem(url1));
 
          string url2 = "/Test2.js";
-         manager.Access<IScriptFilesInjector>().Add(url2);
+         manager.Access<IScriptFilesInjector>().Add(new ScriptFileInjectorItem(url2));
          contentWriter.Write("scriptfile: <!-- Injection-Point='IScriptFilesInjector'-->"); 
 
          string cssurl1 = "/Test1.css";
-         manager.Access<IStyleFilesInjector>().Add(cssurl1);
+         manager.Access<IStyleFilesInjector>().Add(new StyleFileInjectorItem(cssurl1));
          contentWriter.Write("stylefile: <!-- Injection-Point='IStyleFilesInjector'-->");
 
          string name1 = "NAME1";
          string content1 = "CONTENT1";
-         manager.Access<IMetaTagsInjector>().Add(name1, content1);
+         manager.Access<IMetaTagsInjector>().Add(new MetaTagInjectorItem(name1, content1));
          contentWriter.Write("metatag: <!-- Injection-Point='IMetaTagsInjector'-->");
 
          string script1 = "function test1() { }; ";
-         manager.Access<IScriptBlocksInjector>("Upper").Add(null, script1);
+         manager.Access<IScriptBlocksInjector>("Upper").Add(new ScriptBlockInjectorItem(script1)); // lets the Key be assigned
          contentWriter.Write("upper: <!-- Injection-Point='IScriptBlocksInjector:Upper'-->");
 
          string script2 = "function test2() { }; ";
-         manager.Access<IScriptBlocksInjector>("Lower").Add(null, script2);
+         manager.Access<IScriptBlocksInjector>("Lower").Add(new ScriptBlockInjectorItem(script2)); // lets the Key be assigned
          contentWriter.Write("lower: <!-- Injection-Point='IScriptBlocksInjector:Lower'-->");
 
 
          string name2 = "NAME2";
          string value2 = "VALUE2";
-         manager.Access<IHiddenFieldsInjector>().Add(name2, value2);
+         manager.Access<IHiddenFieldsInjector>().Add(new HiddenFieldInjectorItem(name2, value2));
          contentWriter.Write("hidden: <!-- Injection-Point='IHiddenFieldsInjector'-->");
 
 

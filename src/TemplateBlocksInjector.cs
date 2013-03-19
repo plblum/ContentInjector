@@ -19,50 +19,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace ContentInjector
 {
-   public class TemplateInjectorItem : IKeyedInjectorItem
+
+/// <summary>
+/// For inserting script tags that are used for templating engines.
+/// </summary>
+/// <remarks>
+/// <para>This library includes classes for various templating engines. None of them
+/// are preregistered with the InjectorFactory. You must explicitly register
+/// the desired class and associate it with ITemplateBlocksInjector.</para>
+/// <para>
+/// Here are the classes that support templates:
+/// UnderscoreTemplateBlocksInjector, KnockoutTemplateBlocksInjector, 
+/// jQueryTemplateBlocksInjector, and KendoUiTemplateBlocksInjector.</para>
+/// </remarks>
+   public class TemplateBlocksInjector : BaseKeyedInjector<BaseTemplateInjectorItem>, ITemplateBlocksInjector
    {
-      public TemplateInjectorItem(string id, string content)
-      {
-         ID = id;
-         Content = content ?? String.Empty;
-      }
-
-/// <summary>
-/// Assigns the ID attribute on the script tag.
-/// </summary>
-      public string ID
-      {
-         get { return _id; }
-         set
-         {
-            if (String.IsNullOrEmpty(value))
-               throw new ArgumentException("Must assign text.");
-            _id = value;
-         }
-      }
-      private string _id;
-
-/// <summary>
-/// The markup and template notations that appears within a script tag with type='text/html'.
-/// </summary>
-      public string Content { get; set; }
-
-      #region IKeyedInjectorItem Members
-
-      public string GetKey()
-      {
-         return ID;
-      }
-
-      public void SetKey(string key)
-      {
-         ID = key;
-      }
-
-      #endregion
-
    }
+
 }

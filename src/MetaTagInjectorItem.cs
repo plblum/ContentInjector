@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace ContentInjector
 {
@@ -86,7 +87,53 @@ namespace ContentInjector
          Name = key;
       }
 
+/// <summary>
+/// Existing item is unchanged.
+/// </summary>
+/// <param name="item"></param>
+/// <returns>False</returns>
+      public virtual bool Merge(IKeyedInjectorItem item)
+      {
+         return false;
+      }
+
+
       #endregion
+
+/// <summary>
+/// Creates a meta tag based on the Usage.
+/// Note: The content attribute is included when Usage is charset. That's not needed.
+/// </summary>
+/// <returns></returns>
+      public virtual string GetContent(HttpContextBase context)
+      {
+         string usage = "name";
+         switch (Usage)
+         {
+            case MetaTagUsage.CharSet:
+               usage = "charset";
+               break;
+            case MetaTagUsage.HttpEquiv:
+               usage = "http-equiv";
+               break;
+         }
+         return String.Format(DefaultMetaTagFormat, Name, Content, usage);
+      }
+
+      public string MetaTagFormat
+      {
+         get { return _metaTagFormat ?? DefaultMetaTagFormat; }
+         set { _metaTagFormat = value; }
+      }
+      private string _metaTagFormat;
+
+/// <summary>
+/// The pattern used to create the tag. It is a global in case the user prefers a different pattern.
+/// Always use {0} to indicate where the Name is inserted and {1} where Content is inserted.
+/// {2} for the attribute hosting the Name.
+/// </summary>
+      public static string DefaultMetaTagFormat = "<meta {2}=\"{0}\" content=\"{1}\" />";
+
    }
 
    public enum MetaTagUsage

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace ContentInjector
 {
@@ -51,6 +52,23 @@ namespace ContentInjector
          Content = key ?? String.Empty;
       }
 
+/// <summary>
+/// Existing item is unchanged because if this is called,
+/// the Content is identical.
+/// </summary>
+/// <param name="item"></param>
+/// <returns>False</returns>
+      public virtual bool Merge(IKeyedInjectorItem item)
+      {
+         return false;
+      }
+
+
       #endregion
+
+      public virtual string GetContent(HttpContextBase context)
+      {
+         return Content;
+      }
    }
 }

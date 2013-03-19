@@ -22,9 +22,9 @@ namespace UnitTest
          {
             string name = pairs[i];
             string content = pairs[i + 1];
-            sb.AppendLine(String.Format(MetaTagsInjector.MetaTagPattern, name, content, "name"));
+            sb.AppendLine(String.Format(MetaTagInjectorItem.DefaultMetaTagFormat, name, content, "name"));
          }
-         return sb.ToString();
+         return sb.ToString().TrimEnd('\r', '\n');
       }
 
       [TestMethod]
@@ -42,7 +42,7 @@ namespace UnitTest
          MetaTagsInjector inserter = new MetaTagsInjector();
          string name = "NAME1";
          string content = "CONTENT1";
-         inserter.Add(name, content);
+         inserter.Add(new MetaTagInjectorItem(name, content));
          Assert.IsTrue(inserter.Contains(name));
 
          string expected = CreateExpected(name, content);
@@ -55,10 +55,10 @@ namespace UnitTest
          MetaTagsInjector inserter = new MetaTagsInjector();
          string name = "NAME1";
          string content = "CONTENT1";
-         inserter.Add(name, content);
+         inserter.Add(new MetaTagInjectorItem(name, content));
          Assert.IsTrue(inserter.Contains(name));
          string content2 = "CONTENT2";
-         inserter.Add(name, content2);   // should not add another as its a duplicate
+         inserter.Add(new MetaTagInjectorItem(name, content2));   // should not add another as its a duplicate
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expected = CreateExpected(name, content);
@@ -75,10 +75,10 @@ namespace UnitTest
          string content2 = "CONTENT2";
          Assert.IsFalse(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name1, content1);
+         inserter.Add(new MetaTagInjectorItem(name1, content1));
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name2, content2);
+         inserter.Add(new MetaTagInjectorItem(name2, content2));
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsTrue(inserter.Contains(name2));
          Assert.AreEqual(2, inserter.CountKeys());
@@ -97,10 +97,10 @@ namespace UnitTest
          string content2 = "CONTENT2";
          Assert.IsFalse(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name1, content1, 10);
+         inserter.Add(new MetaTagInjectorItem(name1, content1), 10);
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name2, content2, 0); // this will be shown before name1
+         inserter.Add(new MetaTagInjectorItem(name2, content2), 0); // this will be shown before name1
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsTrue(inserter.Contains(name2));
          Assert.AreEqual(2, inserter.CountKeys());

@@ -78,6 +78,7 @@ namespace ContentInjector
          _injectors.Add(typeof(IScriptBlocksInjector), typeof(ScriptBlocksInjector));
          _injectors.Add(typeof(IHiddenFieldsInjector), typeof(HiddenFieldsInjector));
          _injectors.Add(typeof(IPlaceholderInjector), typeof(PlaceholderInjector));
+         _injectors.Add(typeof(ITemplateBlocksInjector), typeof(TemplateBlocksInjector));
       }
 
 /// <summary>

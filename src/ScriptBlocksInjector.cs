@@ -37,38 +37,9 @@ namespace ContentInjector
 /// </remarks>
    public class ScriptBlocksInjector : BaseKeyedInjector<IScriptBlockInjectorItem>, IScriptBlocksInjector
    {
-#if false
-/// <param name="httpContext"></param>
-/// <returns>If there are no scripts, the empty string is returned.</returns>
-      public override string GetContent(HttpContextBase httpContext)
-      {
-         if (_orderedList.Count == 0)
-            return String.Empty;
-
-         StringBuilder sb = new StringBuilder();
-
-         sb.AppendLine(StartScriptBlockTag);
-         foreach (var orders in _orderedList)
-         {
-            foreach (IScriptBlockInjectorItem items in orders.Value)
-            {
-               sb.AppendLine(items.GetScript());
-            }
-         }
-
-         sb.AppendLine(EndScriptBlockTag);
-
-         return sb.ToString();
-      }
-#endif
       protected override void PrefixContent(StringBuilder sb, HttpContextBase httpContext)
       {
          sb.AppendLine(StartScriptBlockTag);
-      }
-
-      protected override void ItemContent(IScriptBlockInjectorItem item, StringBuilder sb, HttpContextBase httpContext)
-      {
-         sb.AppendLine(item.GetScript());
       }
 
       protected override void PostfixContent(StringBuilder sb, HttpContextBase httpContext)
@@ -79,184 +50,19 @@ namespace ContentInjector
       public static string StartScriptBlockTag = "<script type=\"text/javascript\">";
       public static string EndScriptBlockTag = "</script>";
 
-
 /// <summary>
-/// Adds with the default order
+/// When the item's Key property is unassigned, it will be assigned a unique value
+/// because it means that the script should always be added.
 /// </summary>
-/// <param name="key">Used to find an existing item with the Contains method or replace an existing item.
-/// If null or "", a unique value is internally generated.</param>
-/// <param name="script"></param>
-      public void Add(string key, string script)
-      {
-         Add(key, script, 0);
-      }
-
-
-/// <summary>
-/// Adds in the specified order.
-/// </summary>
-/// <param name="key">Used to find an existing item with the Contains method or replace an existing item.
-/// If null or "", a unique value is internally generated.</param>
-/// <param name="script"></param>
+/// <param name="item"></param>
 /// <param name="order"></param>
-      public virtual void Add(string key, string script, int order)
+      public override void Add(IScriptBlockInjectorItem item, int order = 0)
       {
-         if (String.IsNullOrEmpty(key))
-            key = (_uniqueIDCounter++).ToString();
-         else
-         {
-            IScriptBlockInjectorItem existingItem = null;
-            if (_sortedByKey.TryGetValue(key, out existingItem))
-            {
-               if (existingItem is ScriptBlockInjectorItem)
-                  // NOTE: order is ignored in this case.
-                  ((ScriptBlockInjectorItem)existingItem).Script = script;
-               else
-                  throw new InvalidCastException("");
-               return;
-            }
-         }
-
-         Add(new ScriptBlockInjectorItem(key, script), order);
-
+         if (String.IsNullOrEmpty(item.GetKey()))
+           item.SetKey("UNQ" + (_uniqueIDCounter++).ToString());
+         base.Add(item, order);
       }
 
       private int _uniqueIDCounter = 1;
-
-
-/// <summary>
-/// Returns an instance of ArrayDeclarationInjectorItem for the variable name,
-/// adding it if not declared.
-/// </summary>
-/// <param name="variableName"></param>
-/// <param name="order"></param>
-/// <returns></returns>
-      protected ArrayDeclarationInjectorItem GetDeclaration(string variableName, int order)
-      {
-         IScriptBlockInjectorItem item;
-         if (!this._sortedByKey.TryGetValue(variableName, out item))
-         {
-            item = new ArrayDeclarationInjectorItem(variableName);
-            base.Add(item, order);
-         }
-         return (ArrayDeclarationInjectorItem) item;
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a string value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, string value, bool htmlEncode = false, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value, htmlEncode);
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a boolean value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, bool value, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value);
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds an integer value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, int value, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value);
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a 16 bit integer value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, short value, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value);
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a 64 bit integer value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, Int64 value, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value);
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a double value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, double value, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value);
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a Single value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, Single value, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value);
-      }
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a decimal value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclaration(string variableName, decimal value, int order = 0)
-      {
-         GetDeclaration(variableName, order).Add(value);
-      }
-
-
-/// <summary>
-/// For creating a script that is an array declaration.
-/// Adds a block of javascript code as the value to the end of the array associated with variableName.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-/// <param name="order"></param>
-      public void ArrayDeclarationAsCode(string variableName, string value, int order = 0)
-      {
-         GetDeclaration(variableName, order).AddCode(value);
-      }
-
    }
 }

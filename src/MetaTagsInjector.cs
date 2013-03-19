@@ -30,90 +30,12 @@ namespace ContentInjector
 /// </remarks>
    public class MetaTagsInjector : BaseKeyedInjector<MetaTagInjectorItem>, IMetaTagsInjector
    {
-#if false
-      #region IInjector Members
-
-      public override string GetContent(HttpContextBase httpContext)
-      {
-         StringBuilder sb = new StringBuilder();
-         foreach (var orders in _orderedList)
-         {
-            foreach (MetaTagInjectorItem items in orders.Value)
-            {
-               sb.AppendLine(String.Format(MetaTagPattern, items.Name, items.Content));
-            }
-         }
-
-         return sb.ToString();
-      }
-      #endregion
-#endif
-
-      protected override void ItemContent(MetaTagInjectorItem item, StringBuilder sb, HttpContextBase httpContext)
-      {
-         string usage = "name";
-         switch (item.Usage)
-         {
-            case MetaTagUsage.CharSet:
-               usage = "charset";
-               break;
-            case MetaTagUsage.HttpEquiv:
-               usage = "http-equiv";
-               break;
-         }
-         sb.AppendLine(String.Format(MetaTagPattern, item.Name, item.Content, usage));
-      }
-
-/// <summary>
-/// The pattern used to create the tag. It is a global in case the user prefers a different pattern.
-/// Always use {0} to indicate where the Name is inserted and {1} where Content is inserted.
-/// {2} for the attribute hosting the Name.
-/// </summary>
-      public static string MetaTagPattern = "<meta {2}=\"{0}\" content=\"{1}\" />";
-
 
       protected override IComparer<string> GetComparer()
       {
          return StringComparer.OrdinalIgnoreCase;
       }
 
-/// <summary>
-/// Adds with the default order but does not add a duplicate Name (case insensitive match).
-/// </summary>
-/// <param name="name"></param>
-/// <param name="content"></param>
-      public void Add(string name, string content)
-      {
-         Add(name, content, 0);
-      }
-
-
-/// <summary>
-/// Adds but does not add a duplicate Name (case insensitive match).
-/// </summary>
-/// <param name="name"></param>
-/// <param name="content"></param>
-/// <param name="order"></param>
-      public virtual void Add(string name, string content, int order)
-      {
-         if (!Contains(name))
-            Add(new MetaTagInjectorItem(name, content), order);
-
-      }
-
-/// <summary>
-/// Adds but does not add a duplicate Name (case insensitive match).
-/// Allows changing the usage.
-/// </summary>
-/// <param name="usage"></param>
-/// <param name="name"></param>
-/// <param name="content"></param>
-/// <param name="order"></param>
-      public virtual void Add(MetaTagUsage usage, string name, string content, int order)
-      {
-         if (!Contains(name))
-            Add(new MetaTagInjectorItem(usage, name, content), order);
-      }
 
    }
 

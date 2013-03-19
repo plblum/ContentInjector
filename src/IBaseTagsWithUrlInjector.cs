@@ -24,6 +24,7 @@ namespace ContentInjector
 {
    public interface IBaseTagsWithUrlInjector : IInjector
    {
+#if false
 /// <summary>
 /// Adds with the default order but does not add a duplicate URL (case insensitive match).
 /// </summary>
@@ -37,5 +38,6 @@ namespace ContentInjector
 /// <param name="url"></param>
 /// <param name="order"></param>
       void Add(string url, int order);
+#endif
    }
 }

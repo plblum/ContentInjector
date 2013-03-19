@@ -34,7 +34,7 @@ namespace ContentInjector
 /// <para>The order number owns a list of items. Lower order numbers are earlier in the overall list
 /// of object. Once an order number is used, items are appended to the list in the order they are added.</para>
 /// </remarks>
-   public abstract class BaseKeyedInjector<T> : IInjector, IDisposable
+   public abstract class BaseKeyedInjector<T> : IBaseKeyedInjector<T>, IDisposable
       where T : IKeyedInjectorItem
    {
       public BaseKeyedInjector()
@@ -79,8 +79,20 @@ namespace ContentInjector
 /// </summary>
 /// <param name="order"></param>
 /// <param name="item"></param>
-      public virtual void Add(T item, int order)
+      public virtual void Add(T item, int order = 0)
       {
+         T existingItem;
+         string key = item.GetKey();
+         if (!_sortedByKey.TryGetValue(key, out existingItem))
+            _sortedByKey.Add(key, item);
+         else // key is already in use
+         {
+            if (item.GetType() != existingItem.GetType())
+               throw new ArgumentException("The new InserterItem class differs from an existing InserterItem class with the same key [" + key + "].");
+            existingItem.Merge(item);
+            return;
+         }
+
          IList listForOrder = null;
          if (!_orderedList.TryGetValue(order, out listForOrder))
          {
@@ -89,19 +101,32 @@ namespace ContentInjector
          }
          listForOrder.Add(item);
 
-         T existingItem;
-         string key = item.GetKey();
-         if (!_sortedByKey.TryGetValue(key, out existingItem))
-            _sortedByKey.Add(key, item);
-
          if (!_itemImplementsIDisposable && item is IDisposable)
             _itemImplementsIDisposable = true;
       }
 
+/// <summary>
+/// Determines if the key is already registered.
+/// </summary>
+/// <param name="key"></param>
+/// <returns>Returns true if registered.</returns>
       public virtual bool Contains(string key)
       {
          T item;
          return _sortedByKey.TryGetValue(key, out item);
+      }
+
+/// <summary>
+/// Returns the InserterItem matching the key or null.
+/// </summary>
+/// <param name="key"></param>
+/// <returns></returns>
+      public T Get(string key)
+      {
+         T item;
+         if (_sortedByKey.TryGetValue(key, out item))
+            return item;
+         return default(T);
       }
 
 /// <summary>
@@ -139,7 +164,7 @@ namespace ContentInjector
             }
          }
          PostfixContent(sb, httpContext);
-         return sb.ToString();
+         return sb.ToString().TrimEnd('\r', '\n');
       }
 
 /// <summary>
@@ -158,10 +183,16 @@ namespace ContentInjector
 /// <summary>
 /// Used by GetContent to add text representing the item into the string builder.
 /// </summary>
+/// <remarks>
+/// <para>This class calls the GetContent method on the item. It adds a trailing carraige return+linefeed.</para>
+/// </remarks>
 /// <param name="item"></param>
 /// <param name="sb"></param>
 /// <param name="httpContext"></param>
-      protected abstract void ItemContent(T item, StringBuilder sb, HttpContextBase httpContext);
+      protected virtual void ItemContent(T item, StringBuilder sb, HttpContextBase httpContext)
+      {
+         sb.AppendLine(item.GetContent(httpContext));
+      }
 
 /// <summary>
 /// Used by GetContent to add the final text to the string builder such as a
@@ -212,6 +243,16 @@ namespace ContentInjector
       #endregion
    }
 
+   public interface IBaseKeyedInjector<T> : IInjector
+      where T : IKeyedInjectorItem
+   {
+/// <summary>
+/// Add an IKeyedInjectorItem with a specific order.
+/// </summary>
+/// <param name="order"></param>
+/// <param name="item"></param>
+      void Add(T item, int order);
+   }
 
 
 }

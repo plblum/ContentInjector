@@ -32,18 +32,10 @@ namespace ContentInjector
    public interface ITemplateBlocksInjector : IInjector
    {
 /// <summary>
-/// Adds with the default order.
-/// </summary>
-/// <param name="id"></param>
-      void Add(string id, string content);
-
-
-/// <summary>
 /// Adds but does not add a duplicate ID (case insensitive match).
 /// </summary>
 /// <param name="id"></param>
-/// <param name="order"></param>
-      void Add(string id, string content, int order);
+      void Add(BaseTemplateInjectorItem item, int order = 0);
 
    }
 }

@@ -22,7 +22,7 @@ namespace UnitTest
          }
 
          sb.AppendLine(ScriptBlocksInjector.EndScriptBlockTag);
-         return sb.ToString();
+         return sb.ToString().TrimEnd('\r', '\n');
       }
 
       [TestMethod]
@@ -40,7 +40,7 @@ namespace UnitTest
       {
          ScriptBlocksInjector inserter = new ScriptBlocksInjector();
          Assert.AreEqual(0, inserter.CountKeys());
-         inserter.ArrayDeclaration("varName1", 1.5);
+         inserter.Add(new ArrayDeclarationInjectorItem("varName1", 1.5));
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expectedGroup = CreateExpected(
@@ -54,8 +54,8 @@ namespace UnitTest
       {
          ScriptBlocksInjector inserter = new ScriptBlocksInjector();
          Assert.AreEqual(0, inserter.CountKeys());
-         inserter.ArrayDeclaration("varName1", "something");
-         inserter.ArrayDeclaration("varName1", false);
+         inserter.Add(new ArrayDeclarationInjectorItem("varName1", "something"));
+         inserter.Add(new ArrayDeclarationInjectorItem("varName1", false));
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expectedGroup = CreateExpected(
@@ -69,8 +69,8 @@ namespace UnitTest
       {
          ScriptBlocksInjector inserter = new ScriptBlocksInjector();
          Assert.AreEqual(0, inserter.CountKeys());
-         inserter.ArrayDeclaration("varName1", 1.5);
-         inserter.ArrayDeclaration("varName2", "something");
+         inserter.Add(new ArrayDeclarationInjectorItem("varName1", 1.5));
+         inserter.Add(new ArrayDeclarationInjectorItem("varName2", "something"));
          Assert.AreEqual(2, inserter.CountKeys());
 
          string expectedGroup = CreateExpected(
@@ -85,10 +85,10 @@ namespace UnitTest
       {
          ScriptBlocksInjector inserter = new ScriptBlocksInjector();
          Assert.AreEqual(0, inserter.CountKeys());
-         inserter.ArrayDeclaration("varName1", 1.5);
-         inserter.ArrayDeclaration("varName1", false);
-         inserter.ArrayDeclaration("varName2", "something");
-         inserter.ArrayDeclaration("VARNAME2", 400);
+         inserter.Add(new ArrayDeclarationInjectorItem("varName1", 1.5));
+         inserter.Add(new ArrayDeclarationInjectorItem("varName1", false));
+         inserter.Add(new ArrayDeclarationInjectorItem("varName2", "something"));
+         inserter.Add(new ArrayDeclarationInjectorItem("VARNAME2", 400));
          Assert.AreEqual(3, inserter.CountKeys());
 
          string expectedGroup = CreateExpected(

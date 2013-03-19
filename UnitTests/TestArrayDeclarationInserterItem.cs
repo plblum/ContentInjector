@@ -37,7 +37,7 @@ namespace UnitTest
          ArrayDeclarationInjectorItem item = new ArrayDeclarationInjectorItem(varName);
 
          string expected = CreateExpected(varName);
-         Assert.AreEqual(expected, item.GetScript());
+         Assert.AreEqual(expected, item.GetContent(null));
 
       }
 
@@ -51,7 +51,7 @@ namespace UnitTest
          item.Add((long)3);
 
          string expected = CreateExpected(varName, "1", "2", "3");
-         Assert.AreEqual(expected, item.GetScript());
+         Assert.AreEqual(expected, item.GetContent(null));
       }
 
       [TestMethod]
@@ -64,7 +64,7 @@ namespace UnitTest
          item.Add(3.5M);
 
          string expected = CreateExpected(varName, "1.5", "2.5", "3.5");
-         Assert.AreEqual(expected, item.GetScript());
+         Assert.AreEqual(expected, item.GetContent(null));
       }
 
       [TestMethod]
@@ -78,7 +78,7 @@ namespace UnitTest
          item.Add("abc<hi>", false);
 
          string expected = CreateExpected(varName, "\"abc\"", "\"ab&quot;c\"", "\"abc&lt;hi&gt;\"", "\"abc<hi>\"");
-         Assert.AreEqual(expected, item.GetScript());
+         Assert.AreEqual(expected, item.GetContent(null));
       }
 
       [TestMethod]
@@ -90,7 +90,7 @@ namespace UnitTest
          item.Add(false);
 
          string expected = CreateExpected(varName, "true", "false");
-         Assert.AreEqual(expected, item.GetScript());
+         Assert.AreEqual(expected, item.GetContent(null));
       }
 
       [TestMethod]
@@ -103,7 +103,7 @@ namespace UnitTest
          item.Add(3.5M);
 
          string expected = CreateExpected(varName, "1.5", "alert('hi')", "3.5");
-         Assert.AreEqual(expected, item.GetScript());
+         Assert.AreEqual(expected, item.GetContent(null));
       }
 
    }

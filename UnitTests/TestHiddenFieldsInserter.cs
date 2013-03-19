@@ -22,9 +22,9 @@ namespace UnitTest
          {
             string name = pairs[i];
             string value = pairs[i + 1];
-            sb.AppendLine(String.Format(HiddenFieldsInjector.HiddenFieldPattern, name, value));
+            sb.AppendLine(String.Format(HiddenFieldInjectorItem.DefaultHiddenFieldFormat, name, value));
          }
-         return sb.ToString();
+         return sb.ToString().TrimEnd('\r', '\n');
       }
 
       [TestMethod]
@@ -42,7 +42,7 @@ namespace UnitTest
          HiddenFieldsInjector inserter = new HiddenFieldsInjector();
          string name = "NAME1";
          string value = "VALUE1";
-         inserter.Add(name, value);
+         inserter.Add(new HiddenFieldInjectorItem(name, value));
          Assert.IsTrue(inserter.Contains(name));
 
          string expected = CreateExpected(name, value);
@@ -55,13 +55,13 @@ namespace UnitTest
          HiddenFieldsInjector inserter = new HiddenFieldsInjector();
          string name = "NAME1";
          string value = "VALUE1";
-         inserter.Add(name, value);
+         inserter.Add(new HiddenFieldInjectorItem(name, value));
          Assert.IsTrue(inserter.Contains(name));
          string value2 = "VALUE2";
-         inserter.Add(name, value2);   // should not add another as its a duplicate
+         inserter.Add(new HiddenFieldInjectorItem(name, value2));   // will replace the original
          Assert.AreEqual(1, inserter.CountKeys());
 
-         string expected = CreateExpected(name, value);
+         string expected = CreateExpected(name, value2);
          TestInjector(inserter, expected);
       }
 
@@ -75,10 +75,10 @@ namespace UnitTest
          string value2 = "VALUE2";
          Assert.IsFalse(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name1, value1);
+         inserter.Add(new HiddenFieldInjectorItem(name1, value1));
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name2, value2);
+         inserter.Add(new HiddenFieldInjectorItem(name2, value2));
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsTrue(inserter.Contains(name2));
          Assert.AreEqual(2, inserter.CountKeys());
@@ -97,10 +97,10 @@ namespace UnitTest
          string value2 = "VALUE2";
          Assert.IsFalse(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name1, value1, 10);
+         inserter.Add(new HiddenFieldInjectorItem(name1, value1), 10);
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsFalse(inserter.Contains(name2));
-         inserter.Add(name2, value2, 0); // this will be shown before name1
+         inserter.Add(new HiddenFieldInjectorItem(name2, value2), 0); // this will be shown before name1
          Assert.IsTrue(inserter.Contains(name1));
          Assert.IsTrue(inserter.Contains(name2));
          Assert.AreEqual(2, inserter.CountKeys());

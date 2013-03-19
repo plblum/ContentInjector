@@ -19,39 +19,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace ContentInjector
 {
 
+
+
 /// <summary>
-/// Data stored by the BaseTagWithUrlInjector class to collect
-/// URLs.
+/// Use with StyleFilesInjector to host an item.
 /// </summary>
-   public class UrlInjectorItem : IKeyedInjectorItem
+   public class StyleFileInjectorItem : BaseFileInjectorItem
    {
-      public UrlInjectorItem(string url)
+      public StyleFileInjectorItem(string url)
+         : base(url)
       {
-         Url = url ?? String.Empty;
+      }
+
+      public override string GetContent(HttpContextBase httpContext)
+      {
+         return String.Format(DefaultStyleFileTagFormat,  HttpUtility.UrlPathEncode(FileID));  // NOTE: url is already converted from virtual to absolute path
       }
 
 /// <summary>
-/// The text of the item
+/// The pattern used to create the tag. It is a global in case the user prefers a different pattern.
+/// Always use {0} to indicate where the URL is inserted.
 /// </summary>
-      public string Url { get; set; }
+      public static string DefaultStyleFileTagFormat = "<link href=\"{0}\" type=\"text/css\" rel=\"stylesheet\" />";
 
 
-      #region IKeyedInjectorItem Members
-
-      string IKeyedInjectorItem.GetKey()
-      {
-         return Url;
-      }
-
-      void IKeyedInjectorItem.SetKey(string key)
-      {
-         Url = key ?? String.Empty;
-      }
-
-      #endregion
    }
+
 }

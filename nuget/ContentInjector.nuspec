@@ -2,7 +2,7 @@
 <package>
    <metadata>
       <id>ContentInjector</id>
-      <version>0.1.1-alpha</version>
+      <version>0.5.0</version>
       <authors>Peter L. Blum</authors>
       <description>Use within ASP.NET MVC Razor Views to let your Partial Views and Html Helpers insert their scripts, style sheets, and other content into the appropriate areas of the page. Often their locations are defined in a different View file such as the master page.</description>
       <language>en-US</language>
@@ -10,7 +10,7 @@
       <licenseUrl>https://github.com/plblum/ContentInjector/blob/master/LICENSE.txt</licenseUrl>
       <tags>ASPNETWEBPAGES MVC RAZOR</tags>
       <releaseNotes>
-         * 0.1.1 Alpha Release - For community feedback and to determine interest.
+         * 0.5.0 Beta Release
       </releaseNotes>
    </metadata>
 </package>

@@ -24,19 +24,20 @@ using System.Web;
 
 namespace ContentInjector
 {
-   public class StyleFilesInjector : BaseTagsWithUrlInjector, IStyleFilesInjector
+   public class StyleFilesInjector : BaseFilesInjector, IStyleFilesInjector
    {
-
-      protected override string GetTag(string url, HttpContextBase httpContext)
+      protected override BaseFileInjectorItem CreateInjectorItem(string url)
       {
-         return String.Format(StyleFileTagPattern, url);  // NOTE: url is already converted from virtual to absolute path
+         return new StyleFileInjectorItem(url);
       }
 
-/// <summary>
-/// The pattern used to create the tag. It is a global in case the user prefers a different pattern.
-/// Always use {0} to indicate where the URL is inserted.
-/// </summary>
-      public static string StyleFileTagPattern = "<link href=\"{0}\" type=\"text/css\" rel=\"stylesheet\" />";
+      #region IStyleFilesInjector Members
 
+      public void Add(StyleFileInjectorItem item, int order = 0)
+      {
+         base.Add(item, order);
+      }
+
+      #endregion
    }
 }

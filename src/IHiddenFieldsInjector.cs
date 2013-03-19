@@ -30,13 +30,6 @@ namespace ContentInjector
    public interface IHiddenFieldsInjector : IInjector
    {
 
-/// <summary>
-/// Adds with the default order but does not add a duplicate Name (case insensitive match).
-/// </summary>
-/// <param name="name"></param>
-/// <param name="value"></param>
-      void Add(string name, string value);
-
 
 /// <summary>
 /// Adds but does not add a duplicate Name (case insensitive match).
@@ -44,7 +37,8 @@ namespace ContentInjector
 /// <param name="name"></param>
 /// <param name="value"></param>
 /// <param name="order"></param>
-      void Add(string name, string value, int order);
+      void Add(HiddenFieldInjectorItem item, int order = 0);
+
 
    }
 }

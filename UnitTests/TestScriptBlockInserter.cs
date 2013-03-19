@@ -28,7 +28,7 @@ namespace UnitTest
          }
 
          sb.AppendLine(ScriptBlocksInjector.EndScriptBlockTag);
-         return sb.ToString();
+         return sb.ToString().TrimEnd('\r', '\n');
       }
 
       [TestMethod]
@@ -37,7 +37,7 @@ namespace UnitTest
          ScriptBlocksInjector inserter = new ScriptBlocksInjector();
          string key = "key1";
          string script = "function script1() {};";
-         inserter.Add(key, script);
+         inserter.Add(new ScriptBlockInjectorItem(key, script));
          Assert.IsTrue(inserter.Contains(key));
 
          string expected = createExpected(script);
@@ -50,10 +50,10 @@ namespace UnitTest
          ScriptBlocksInjector inserter = new ScriptBlocksInjector();
          string key = "key1";
          string script = "function script1() {};";
-         inserter.Add(key, script);
+         inserter.Add(new ScriptBlockInjectorItem(key, script));
          Assert.IsTrue(inserter.Contains(key));
          string script2 = "function script2() {};";
-         inserter.Add(key, script2);   // should not add another as its a duplicate, but it replaces the original script
+         inserter.Add(new ScriptBlockInjectorItem(key, script2));   // should not add another as its a duplicate, but it replaces the original script
          Assert.AreEqual(1, inserter.CountKeys());
 
          string expected = createExpected(script2);
@@ -70,10 +70,10 @@ namespace UnitTest
          string script2 = "function script2() {};";
          Assert.IsFalse(inserter.Contains(key1));
          Assert.IsFalse(inserter.Contains(key2));
-         inserter.Add(key1, script1);
+         inserter.Add(new ScriptBlockInjectorItem(key1, script1));
          Assert.IsTrue(inserter.Contains(key1));
          Assert.IsFalse(inserter.Contains(key2));
-         inserter.Add(key2, script2);
+         inserter.Add(new ScriptBlockInjectorItem(key2, script2));
          Assert.IsTrue(inserter.Contains(key1));
          Assert.IsTrue(inserter.Contains(key2));
          Assert.AreEqual(2, inserter.CountKeys());
@@ -92,10 +92,10 @@ namespace UnitTest
          string script2 = "function script2() {};";
          Assert.IsFalse(inserter.Contains(key1));
          Assert.IsFalse(inserter.Contains(key2));
-         inserter.Add(key1, script1, 10);
+         inserter.Add(new ScriptBlockInjectorItem(key1, script1), 10);
          Assert.IsTrue(inserter.Contains(key1));
          Assert.IsFalse(inserter.Contains(key2));
-         inserter.Add(key2, script2, 0); // this will be shown before key1
+         inserter.Add(new ScriptBlockInjectorItem(key2, script2), 0); // this will be shown before key1
          Assert.IsTrue(inserter.Contains(key1));
          Assert.IsTrue(inserter.Contains(key2));
          Assert.AreEqual(2, inserter.CountKeys());

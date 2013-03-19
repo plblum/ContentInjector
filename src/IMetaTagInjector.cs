@@ -28,33 +28,6 @@ namespace ContentInjector
 /// </summary>
    public interface IMetaTagsInjector : IInjector
    {
-
-/// <summary>
-/// Adds with the default order but does not add a duplicate Name (case insensitive match).
-/// The Usage is Name.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="content"></param>
-      void Add(string name, string content);
-
-
-/// <summary>
-/// Adds but does not add a duplicate Name (case insensitive match).
-/// The Usage is Name.
-/// </summary>
-/// <param name="name"></param>
-/// <param name="content"></param>
-/// <param name="order"></param>
-      void Add(string name, string content, int order);
-
-/// <summary>
-/// Adds but does not add a duplicate Name (case insensitive match).
-/// Allows changing the usage.
-/// </summary>
-/// <param name="usage"></param>
-/// <param name="name"></param>
-/// <param name="content"></param>
-/// <param name="order"></param>
-      void Add(MetaTagUsage usage, string name, string content, int order);
+      void Add(MetaTagInjectorItem item, int order = 0);
    }
 }

@@ -29,5 +29,12 @@ namespace ContentInjector
 /// </summary>
    public interface IScriptFilesInjector : IBaseTagsWithUrlInjector
    {
+
+/// <summary>
+/// Add a ScriptFileInjectorItem with a specific order.
+/// </summary>
+/// <param name="order"></param>
+/// <param name="item"></param>
+      void Add(ScriptFileInjectorItem item, int order = 0);
    }
 }

@@ -23,23 +23,31 @@ using System.Web;
 
 namespace ContentInjector
 {
+
+
+
 /// <summary>
-/// Inserts the content supplied as is. It does not add any HTML tags.
+/// Use with ScriptFilesInjector to host an item.
 /// </summary>
-/// <remarks>
-/// <para>
-/// Generally unique insertion tags are defined, each with its own group name,
-/// so the parts of the page can add their own content in the right place.
-/// For example, an HtmlHelper may want to insert markup for the validation
-/// errors nearby and expects the user to place the insertion with the same
-/// group name as the ID of the markup it generates.
-/// In this case, there is usually just one PlaceholderInjectorItem defined
-/// per PlaceholderInjector instance.
-/// </para>
-/// </remarks>
-   public class PlaceholderInjector : BaseKeyedInjector<PlaceholderInjectorItem>, IPlaceholderInjector
+   public class ScriptFileInjectorItem : BaseFileInjectorItem
    {
+      public ScriptFileInjectorItem(string url)
+         : base(url)
+      {
+      }
+
+      public override string GetContent(HttpContextBase httpContext)
+      {
+         return String.Format(DefaultScriptFileTagFormat,  HttpUtility.UrlPathEncode(FileID)); // NOTE: url is already converted from virtual to absolute path
+      }
+
+/// <summary>
+/// The pattern used to create the tag. It is a global in case the user prefers a different pattern.
+/// Always use {0} to indicate where the URL is inserted.
+/// </summary>
+      public static string DefaultScriptFileTagFormat = "<script src=\"{0}\" type=\"text/javascript\"></script>";
 
    }
+
 
 }

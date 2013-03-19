@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace ContentInjector
 {
@@ -66,6 +67,48 @@ namespace ContentInjector
          Name = key;
       }
 
+/// <summary>
+/// Existing item's value is changed.
+/// </summary>
+/// <param name="item"></param>
+/// <returns>False</returns>
+      public virtual bool Merge(IKeyedInjectorItem item)
+      {
+         Value = ((HiddenFieldInjectorItem)item).Value;
+         return true;
+      }
+
+
       #endregion
+
+/// <summary>
+/// Returns the string representing the hidden field.
+/// </summary>
+/// <returns></returns>
+      public virtual string GetContent(HttpContextBase context)
+      {
+         return String.Format(HiddenFieldFormat, Name, Value);
+      }
+
+/// <summary>
+/// Provides the format used by GetContent with String.Format() to create
+/// the HTML for the hidden field.
+/// </summary>
+/// <value>
+/// <para>When unassigned, it uses the default in the static field DefaultHiddenFieldFormat.</para>
+/// </value>
+      public string HiddenFieldFormat
+      {
+         get { return _hiddenFieldFormat ?? DefaultHiddenFieldFormat; }
+         set { _hiddenFieldFormat = value; }
+      }
+      private string _hiddenFieldFormat;
+
+/// <summary>
+/// The pattern used to create the tag. It is a global in case the user prefers a different pattern.
+/// Always use {0} to indicate where the Name is inserted and {1} where Value is inserted.
+/// </summary>
+      public static string DefaultHiddenFieldFormat = "<input type=\"hidden\" name=\"{0}\" value=\"{1}\" />";
+
    }
 }
