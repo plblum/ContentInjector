@@ -1,5 +1,5 @@
 #Content Injector for ASP.NET MVC
-
+Version: 0.5 - Beta 1<br />
 
 <h2>Purpose</h2>
 <p>Content Injector lets you build smarter Views, Partial Views, and Html Helpers which dictate the scripts and style sheets they need. They can safely inject content into the page in areas already rendered, such as the &lt;head&gt; tag, where style sheets and some scripts should be located. Content Injector will also prevent outputting duplicate tags that load your style sheets and scripts.</p>
@@ -319,4 +319,6 @@ ArrayDeclaration(), and Placeholder().<br />
 </li>
 <li>Open the <a href="https://github.com/plblum/ContentInjector/blob/master/Users%20Guide.pdf?raw=true">
 <strong>Users Guide.pdf</strong></a> and dig in. It provides details on all described above.</li>
+<li>Use the <a href="http://hosted.comm100.com/forum/Support,-Discussions-and-Feedback_f576.aspx?siteid=128400" target="_blank">forums</a> for support and discussions with the community.</li>
+<li>Use the <a href="https://github.com/plblum/ContentInjector/issues" target="_blank">issues command</a> to report and review bugs.</li>
 </ul>
