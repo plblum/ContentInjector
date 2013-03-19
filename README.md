@@ -5,7 +5,9 @@ Version: 0.5 - Beta 1<br />
 <p>Content Injector lets you build smarter Views, Partial Views, and Html Helpers which dictate the scripts and style sheets they need. They can safely inject content into the page in areas already rendered, such as the &lt;head&gt; tag, where style sheets and some scripts should be located. Content Injector will also prevent outputting duplicate tags that load your style sheets and scripts.</p>
 <p>Your Views and Helpers also can inject hidden fields, array declarations, &lt;meta&gt; tags, JavaScript templates, and any other content to predefined locations on the page. </p>
 
-<p>It compliments other tools, like <a href="http://aspnetoptimization.codeplex.com/" target="_blank">Web Optimization Framework</a>, by letting them collect and manage data, while letting Content Injector inject the data into the page.</p>
+<p>It compliments other tools, like <a href="http://aspnetoptimization.codeplex.com/" target="_blank">Web Optimization Framework</a>, by letting them collect and manage data, while letting Content Injector inject the data into the page.
+</p><p><em>If you are using Web Optimization Framework, consider using <a href="https://github.com/plblum/ContentInjector.WOF" target="_blank">Content Injector extensions for Web Optimization Framework.</a></em>
+</p>
 <p>It supports the ASP.NET Razor View Engine, and is customizable.</p>
 
 <h2>Background</h2>
@@ -302,7 +304,7 @@ Add the <b>ContentInjector.dll</b> assembly to your ASP.NET MVC web application.
 </ul>
 </li>
 <li>In Application_Start, add this code:<br />
-<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>ViewEngines.Engines.Clear();<br />ViewEngines.Engines.Add(new InsertionsManagement.IMRazorViewEngine());</pre>
+<pre style='background:#FFEFE6;font-size:10pt;font-family:"Lucida Console";color:black'>ViewEngines.Engines.Clear();<br />ViewEngines.Engines.Add(new ContentInjector.CIRazorViewEngine());</pre>
 </li>
 <li>Add the customary Injection Points to the master page, as shown in the <a href="#Example">Example above</a>.</li>
 <li>Call methods on the Injector property to add content. Methods include ScriptFile(),
@@ -321,4 +323,5 @@ ArrayDeclaration(), and Placeholder().<br />
 <strong>Users Guide.pdf</strong></a> and dig in. It provides details on all described above.</li>
 <li>Use the <a href="http://hosted.comm100.com/forum/Support,-Discussions-and-Feedback_f576.aspx?siteid=128400" target="_blank">forums</a> for support and discussions with the community.</li>
 <li>Use the <a href="https://github.com/plblum/ContentInjector/issues" target="_blank">issues command</a> to report and review bugs.</li>
+<li>If you are using Web Optimization Framework, consider adding <a href="https://github.com/plblum/ContentInjector.WOF" target="_blank">Content Injector extensions for Web Optimization Framework.</a></li>
 </ul>
